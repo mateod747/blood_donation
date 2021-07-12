@@ -75,10 +75,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BloodDonationDAL.cs" />
+    <Compile Include="BloodTransactionDAL.cs" />
     <Compile Include="DALModule.cs" />
     <Compile Include="DonorDAL.cs" />
+    <Compile Include="IBloodDonationDAL.cs" />
+    <Compile Include="IBloodTransactionDAL.cs" />
     <Compile Include="IDonorDAL.cs" />
+    <Compile Include="IMedicalPersonnelDAL.cs" />
+    <Compile Include="IRecipientDAL.cs" />
+    <Compile Include="MedicalPersonnelDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecipientDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
