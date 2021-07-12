@@ -1,0 +1,143 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\bloodDonation.Web.csproj": {}
+  },
+  "projects": {
+    "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj",
+        "projectName": "bloodDonation.DAL",
+        "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj",
+        "frameworks": {
+          "net472": {
+            "projectReferences": {
+              "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj": {
+                "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    },
+    "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Factory\\bloodDonation.Factory.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Factory\\bloodDonation.Factory.csproj",
+        "projectName": "bloodDonation.Factory",
+        "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Factory\\bloodDonation.Factory.csproj",
+        "frameworks": {
+          "net472": {
+            "projectReferences": {
+              "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj": {
+                "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj"
+              },
+              "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj": {
+                "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    },
+    "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj",
+        "projectName": "bloodDonation.Model",
+        "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj"
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    },
+    "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\bloodDonation.Web.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\bloodDonation.Web.csproj",
+        "projectName": "bloodDonation.Web",
+        "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\bloodDonation.Web.csproj",
+        "packagesPath": "C:\\Users\\mateodubinjak\\.nuget\\packages\\",
+        "outputPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\mateodubinjak\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj": {
+                "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj"
+              },
+              "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Factory\\bloodDonation.Factory.csproj": {
+                "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Factory\\bloodDonation.Factory.csproj"
+              },
+              "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj": {
+                "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Autofac": {
+              "target": "Package",
+              "version": "[6.2.0, )"
+            },
+            "Autofac.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[7.1.0, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
