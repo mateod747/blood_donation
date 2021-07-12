@@ -1,1 +1,12 @@
 ﻿bloodDonation.Solution/bloodDonation.Web/obj/Debug/netcoreapp3.1
+bloodDonation.Solution/.vs/bloodDonation.Solution/v16
+bloodDonation.Solution/bloodDonation.Common/bin/Debug
+bloodDonation.Solution/bloodDonation.Common/obj/Debug
+bloodDonation.Solution/bloodDonation.DAL/bin/Debug
+bloodDonation.Solution/bloodDonation.DAL/obj/Debug
+bloodDonation.Solution/bloodDonation.Factory/bin/Debug
+bloodDonation.Solution/bloodDonation.Factory/obj/Debug
+bloodDonation.Solution/bloodDonation.Model/bin/Debug
+bloodDonation.Solution/bloodDonation.Model/obj/Debug
+bloodDonation.Solution/bloodDonation.Web/bin/Debug
+bloodDonation.Solution/bloodDonation.Web/obj
