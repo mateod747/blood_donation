@@ -632,11 +632,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\bloodDonation.Web.csproj",
+      "projectUniqueName": "C:\\Users\\mateodubinjak\\Fork\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\bloodDonation.Web.csproj",
       "projectName": "bloodDonation.Web",
-      "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\bloodDonation.Web.csproj",
+      "projectPath": "C:\\Users\\mateodubinjak\\Fork\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\bloodDonation.Web.csproj",
       "packagesPath": "C:\\Users\\mateodubinjak\\.nuget\\packages\\",
-      "outputPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\obj\\",
+      "outputPath": "C:\\Users\\mateodubinjak\\Fork\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -656,14 +656,14 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj": {
-              "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj"
+            "C:\\Users\\mateodubinjak\\Fork\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj": {
+              "projectPath": "C:\\Users\\mateodubinjak\\Fork\\blood_donation\\bloodDonation.Solution\\bloodDonation.DAL\\bloodDonation.DAL.csproj"
             },
-            "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Factory\\bloodDonation.Factory.csproj": {
-              "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Factory\\bloodDonation.Factory.csproj"
+            "C:\\Users\\mateodubinjak\\Fork\\blood_donation\\bloodDonation.Solution\\bloodDonation.Factory\\bloodDonation.Factory.csproj": {
+              "projectPath": "C:\\Users\\mateodubinjak\\Fork\\blood_donation\\bloodDonation.Solution\\bloodDonation.Factory\\bloodDonation.Factory.csproj"
             },
-            "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj": {
-              "projectPath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj"
+            "C:\\Users\\mateodubinjak\\Fork\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj": {
+              "projectPath": "C:\\Users\\mateodubinjak\\Fork\\blood_donation\\bloodDonation.Solution\\bloodDonation.Model\\bloodDonation.Model.csproj"
             }
           }
         }

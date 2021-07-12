@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3jEX9qImN8Id+edS6igRMhAcdkbWBo1j+uma7V1PdiUAmIB8R1jamEnZDLzxbdJ1hQi66nHMbTWkEQ+4slo1RQ==",
+  "dgSpecHash": "wRqCc94gu6oqFbvGVygwXCAbD4vyaWL1hdl/GWidNzV+vzQOSeBFTn96YVdvd6aQtKlfyt3UuU3yC2XvNFOYLA==",
   "success": true,
-  "projectFilePath": "D:\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\bloodDonation.Web.csproj",
+  "projectFilePath": "C:\\Users\\mateodubinjak\\Fork\\blood_donation\\bloodDonation.Solution\\bloodDonation.Web\\bloodDonation.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mateodubinjak\\.nuget\\packages\\autofac\\6.2.0\\autofac.6.2.0.nupkg.sha512",
     "C:\\Users\\mateodubinjak\\.nuget\\packages\\autofac.extensions.dependencyinjection\\7.1.0\\autofac.extensions.dependencyinjection.7.1.0.nupkg.sha512",
