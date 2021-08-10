@@ -10,7 +10,7 @@ namespace bloodDonation.DAL
 {
     public class BloodDonationDAL : IBloodDonationDAL
     {
-        private readonly string connectionString = @"Server=DESKTOP-5LE39JF\SQLEXPRESS;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
+        private readonly string connectionString = @"Server=mdubinjak;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public async Task<BloodDonationModel> GetBloodDonation(int id)
         {
