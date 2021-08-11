@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Nav from './components/Nav';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Dashboard from './components/Dashboard';
+import Login from './components/Login';
 
 function App() {
+  const [token, setToken] = useState();
+
+  if(!token) {
+    return <Login setToken={setToken} />
+  }
+
   return (
     <Router>
       <div className="App">

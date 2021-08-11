@@ -1,4 +1,5 @@
-﻿using bloodDonation.Factory;
+﻿using bloodDonation.Common;
+using bloodDonation.Factory;
 using bloodDonation.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace bloodDonation.Web.Controllers
         {
             try
             {
+                var hash = await PasswordHash.ValidatePassword("mateo", "mateo");
                 var model = await _donorFactory.GetDonor(id);
 
                 var modelDto = new DonorModelDto()

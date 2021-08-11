@@ -78,6 +78,7 @@
     <Compile Include="BloodDonationModel.cs" />
     <Compile Include="BloodTransactionModel.cs" />
     <Compile Include="DonorModel.cs" />
+    <Compile Include="LoginData.cs" />
     <Compile Include="MedicalPersonnelModel.cs" />
     <Compile Include="ModelModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
