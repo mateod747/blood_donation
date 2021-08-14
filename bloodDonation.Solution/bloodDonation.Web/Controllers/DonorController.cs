@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,19 +26,35 @@ namespace bloodDonation.Web.Controllers
         {
             try
             {
-                var hash = await PasswordHash.ValidatePassword("mateo", "mateo");
+                PasswordHash hash = new PasswordHash();
+                var hashg = await hash.ValidatePassword("mateo", "mateo");
+
+                var validationResult = JWTAuth.ValidateCurrentToken(hashg);
+                var claim = "";
+
+                if (validationResult) claim = JWTAuth.GetClaim(hashg, "UserRole");
+
                 var model = await _donorFactory.GetDonor(id);
 
                 var modelDto = new DonorModelDto()
                 {
-                    DonorID = model.DonorID,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Address = model.Address,
-                    Email = model.Email,
-                    Phone = model.Phone,
-                    BloodType = model.BloodType
+                    FirstName = "You stupid"
                 };
+
+                if(validationResult && claim.Equals("User"))
+                {
+                    modelDto = new DonorModelDto()
+                    {
+                        DonorID = model.DonorID,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Address = model.Address,
+                        Email = model.Email,
+                        Phone = model.Phone,
+                        BloodType = model.BloodType
+                    };
+                    return Ok(modelDto);
+                }                
 
                 return Ok(modelDto);
             }

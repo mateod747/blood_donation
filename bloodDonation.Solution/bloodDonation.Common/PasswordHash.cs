@@ -30,11 +30,12 @@ namespace bloodDonation.Common
                    Convert.ToBase64String(hash);
         }
 
-        public async Task<JwtSecurityToken> ValidatePassword(string username, string password)
+        public async Task<string> ValidatePassword(string username, string password)
         {
             var donors = new List<LoginData>();
             var connectionString = @"Server=mdubinjak;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (
+                SqlConnection connection = new SqlConnection(connectionString))
             {
                 string queryString = "Select * from LoginData where username = @username;";
 
@@ -80,9 +81,8 @@ namespace bloodDonation.Common
                 var testHash = GetPbkdf2Bytes(password, salt, iterations, hash.Length);
 
                 if (SlowEquals(hash, testHash))
-                {
-                    var token = new JwtSecurityToken("mateodubinjak", "login_user", expires: DateTime.Now.AddDays(1));
-                    return token;
+                {                    
+                    return JWTAuth.GenerateToken("User");
                 }
             }
             return null;
