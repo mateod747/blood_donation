@@ -1,9 +1,11 @@
 ﻿using bloodDonation.Common;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace bloodDonation.Web.Controllers
@@ -12,18 +14,23 @@ namespace bloodDonation.Web.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        //[HttpGet]
-        //public async Task<IActionResult> ValidateLogin(string username, string password)
-        //{
-        //    try
-        //    {
-        //        var hash = PasswordHash.HashPassword(password);
+        [EnableCors]
+        [HttpGet]
+        public async Task<IActionResult> ValidateLogin(string username, string password)
+        {
+            PasswordHash hash = new PasswordHash();
+            var token = String.Empty;
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+            try
+            {
+                token = await hash.ValidatePassword(username, password);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(token);
+        }
     }
 }

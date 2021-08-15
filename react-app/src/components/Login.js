@@ -1,29 +1,35 @@
 import React from 'react';
 import '../layouts/Login.css';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
-async function loginUser(credentials) {
-    return fetch('http://localhost:8080/login', {
-        method: 'POST',
+async function LoginUser(credentials) {
+    return fetch('https://localhost:44336/api/login?username=' + credentials.username + '&password=' + credentials.password, 
+    {
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
+            "Access-Control-Allow-Origin": "*"
+        }
     })
-        .then(data => data.json())
+        .then(json => json.text())
+        .then(token =>
+            sessionStorage.setItem('loginToken', token)
+            )
 }
 
-export default function Login({ setToken }) {
-    const [username, setUserName] = useState();
-    const [password, setPassword] = useState();
+export default function Login() {
+    const [username, setUserName] = React.useState();
+    const [password, setPassword] = React.useState();
 
     const handleSubmit = async e => {
         e.preventDefault();
-        const token = await loginUser({
+        await LoginUser({
             username,
             password
-        });
-        setToken(token);
+        })
+        if(sessionStorage.getItem('loginToken').length > 0) {
+            window.location.href='http://localhost:3000/dashboard';
+        }
     }
     return (
         <div className="login-wrapper">

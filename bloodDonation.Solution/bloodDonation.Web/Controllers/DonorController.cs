@@ -1,6 +1,7 @@
 ﻿using bloodDonation.Common;
 using bloodDonation.Factory;
 using bloodDonation.Model;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,28 +22,25 @@ namespace bloodDonation.Web.Controllers
             _donorFactory = donorFactory;
         }
 
+        [EnableCors]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDonor(int id)
+        public async Task<IActionResult> GetDonor(int id, [FromHeader] string token)
         {
             try
             {
-                PasswordHash hash = new PasswordHash();
-                var hashg = await hash.ValidatePassword("mateo", "mateo");
+                var validationResult = JWTAuth.ValidateCurrentToken(token);
 
-                var validationResult = JWTAuth.ValidateCurrentToken(hashg);
-                var claim = "";
+                var claim = String.Empty;
+                var modelDto = new DonorModelDto();
 
-                if (validationResult) claim = JWTAuth.GetClaim(hashg, "UserRole");
+                if (!validationResult) return Ok(modelDto);
 
-                var model = await _donorFactory.GetDonor(id);
+                claim = JWTAuth.GetClaim(token, "UserRole");
 
-                var modelDto = new DonorModelDto()
+                if(claim.Equals("User"))
                 {
-                    FirstName = "You stupid"
-                };
+                    var model = await _donorFactory.GetDonor(id);
 
-                if(validationResult && claim.Equals("User"))
-                {
                     modelDto = new DonorModelDto()
                     {
                         DonorID = model.DonorID,
@@ -53,8 +51,7 @@ namespace bloodDonation.Web.Controllers
                         Phone = model.Phone,
                         BloodType = model.BloodType
                     };
-                    return Ok(modelDto);
-                }                
+                }
 
                 return Ok(modelDto);
             }

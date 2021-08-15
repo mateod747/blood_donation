@@ -12,7 +12,14 @@ class Dashboard extends Component {
     }
 
     fetchDonor = () => {        
-        fetch(`https://localhost:44336/api/donor/1`)
+        fetch(`https://localhost:44336/api/donor/1`, 
+        {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "token": sessionStorage.getItem('loginToken')
+            }
+        }) 
             .then(res => res.json())
             .then(json => {
                 this.setState({

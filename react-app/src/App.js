@@ -6,9 +6,11 @@ import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 
 function App() {
-  const [token, setToken] = useState();
+  const [token, setToken] = React.useState(
+    sessionStorage.getItem('loginToken') || ''
+  );
 
-  if(!token) {
+  if(token.length < 1) {
     return <Login setToken={setToken} />
   }
 

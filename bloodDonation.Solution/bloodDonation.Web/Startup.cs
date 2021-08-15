@@ -22,6 +22,7 @@ namespace bloodDonation.Web
         {
             services.AddControllers();
             services.AddOptions();
+            services.AddCors();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -39,6 +40,11 @@ namespace bloodDonation.Web
             }
 
             app.UseRouting();
+
+            app.UseCors(builder => builder
+               .AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
