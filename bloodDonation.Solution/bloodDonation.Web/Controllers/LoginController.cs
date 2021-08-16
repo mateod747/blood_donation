@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace bloodDonation.Web.Controllers
@@ -19,18 +20,29 @@ namespace bloodDonation.Web.Controllers
         public async Task<IActionResult> ValidateLogin(string username, string password)
         {
             PasswordHash hash = new PasswordHash();
-            var token = String.Empty;
+            var donorData = new DonorDataDto();
 
             try
             {
-                token = await hash.ValidatePassword(username, password);
+                var validationData = await hash.ValidatePassword(username, password);
+                donorData.Token = validationData.Item1;
+                donorData.DonorID = validationData.Item2;
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return Ok(token);
+            string jsonString = JsonSerializer.Serialize(donorData);
+            return Ok(jsonString);
         }
+
+        #region Classes
+        public class DonorDataDto
+        {
+            public string Token { get; set; }
+            public int DonorID { get; set; }
+        }
+        #endregion
     }
 }

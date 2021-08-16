@@ -1,7 +1,6 @@
 import React from 'react';
 import '../layouts/Login.css';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 
 async function LoginUser(credentials) {
     return fetch('https://localhost:44336/api/login?username=' + credentials.username + '&password=' + credentials.password, 
@@ -11,10 +10,13 @@ async function LoginUser(credentials) {
             "Access-Control-Allow-Origin": "*"
         }
     })
-        .then(json => json.text())
-        .then(token =>
-            sessionStorage.setItem('loginToken', token)
-            )
+        .then(response => response.json())
+        .then(donorData =>
+            {
+                sessionStorage.setItem('loginToken', donorData.Token !== 'null' ? donorData.Token : '');
+                sessionStorage.setItem('donorID', donorData.DonorID);
+            }
+        )
 }
 
 export default function Login() {

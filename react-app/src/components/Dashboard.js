@@ -11,8 +11,9 @@ class Dashboard extends Component {
         };
     }
 
-    fetchDonor = () => {        
-        fetch(`https://localhost:44336/api/donor/1`, 
+    fetchDonor = () => {   
+        let donorID = sessionStorage.getItem('donorID');      
+        fetch(`https://localhost:44336/api/donor/${donorID}`, 
         {
             method: 'GET',
             headers: {
