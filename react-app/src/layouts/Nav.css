@@ -1,27 +1,51 @@
 nav {
+    background-image: url(../public/menu.png);
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex;
-    flex: 100%;
-    min-height: 10vh;
-    background-color: rgb(19, 44, 53);
+    flex: 17%;
+    min-height: 100vh;
     color: white;
 }
 
 .nav-links {
+    background-color: black;
+    opacity: 0.9;
     display: flex;
     flex: 1;
-    align-items: stretch;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.nav-logo {
+    margin-top: 25%;
+    display: flex;
+    align-items: flex-start;
+}
+
+.nav-logo img {
+    max-width: 150px;
+    max-height: 150px;
 }
 
 .link-div {
     display: flex;
-    flex-basis: 150px;
+    margin-top: 20%;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
-.link-div:hover {
-    background-color: rgb(27, 28, 34);
+.link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.link:hover {
+    background-color: rgb(36, 36, 36);
     cursor: pointer;
     user-select: none;
 }

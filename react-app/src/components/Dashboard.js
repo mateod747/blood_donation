@@ -35,7 +35,7 @@ class Dashboard extends Component {
 
     render() {
         return (
-            <div>
+            <div className="dashboard">
                 <p>Name of Donor: {this.state.item.firstName} {this.state.item.lastName}</p>
             </div>
         );
