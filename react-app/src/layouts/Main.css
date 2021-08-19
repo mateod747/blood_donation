@@ -1,7 +1,75 @@
 .dashboard {
     display: flex;
-    flex: 80%;
+    flex: 83%;
     min-height: 100vh;
-    background-color: rgb(255, 255, 255);
-    color: rgb(0, 0, 0);
+    flex-direction: column;
+    background-color: rgb(0, 0, 0);
+    z-index: 1;
+}
+
+.dashboard-body {
+    position: absolute;
+    width: 100%;
+    min-height: 100vh;
+    background-image: url("../public/body.jpg");
+    background-size: cover;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.name {
+    display: flex;
+    flex: 2.5;
+    align-items: flex-end;
+    margin-left: 5%;
+    margin-bottom: 5px;
+    color: rgb(255, 255, 255);
+    font-family: 'Poppins', sans-serif;
+    font-size: 4rem;
+    font-weight: 500;
+    z-index: 1;
+}
+
+.header {
+    display: flex;
+    flex: 0.6;
+    align-items: center;
+    margin-left: 5%;
+    color: #F44336;
+    font-family: 'Poppins', sans-serif;
+    font-size: 3rem;
+    font-weight: 500;
+    z-index: 1;
+}
+
+.line {
+    width: 60px;
+    height: 10px;
+    border: 4px solid #FF0000;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dash {
+    display: flex;
+    flex: 5;
+    z-index: 1;
+    align-items: center;
+}
+
+.card {
+    display: flex;
+    flex: 0.9;
+    margin-left: 5%;
+    height: 80%;
+    z-index: 2;
+    opacity: 0.8;
+    flex-direction: row;
+    margin-bottom: 2%;
+}
+
+.section {
+    display: flex;
+    flex: 1;
+    background-color: #000;
 }
