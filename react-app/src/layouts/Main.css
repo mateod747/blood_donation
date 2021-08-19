@@ -3,7 +3,7 @@
     flex: 83%;
     min-height: 100vh;
     flex-direction: column;
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
     z-index: 1;
 }
 
@@ -11,8 +11,8 @@
     position: absolute;
     width: 100%;
     min-height: 100vh;
-    background-image: url("../public/body.jpg");
-    background-size: cover;
+    /* background-image: url("../public/body.jpg");
+    background-size: cover; */
     opacity: 0.3;
     z-index: 0;
 }
@@ -23,7 +23,7 @@
     align-items: flex-end;
     margin-left: 5%;
     margin-bottom: 5px;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-family: 'Poppins', sans-serif;
     font-size: 4rem;
     font-weight: 500;
@@ -66,10 +66,56 @@
     opacity: 0.8;
     flex-direction: row;
     margin-bottom: 2%;
+    background-color: #000;
+    font-family: 'Poppins', sans-serif;
 }
 
 .section {
     display: flex;
-    flex: 1;
-    background-color: #000;
 }
+
+.section1 {
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    flex: 5;
+}
+
+.section1 img {
+    margin-top: 15px;
+    margin-left: 13%;
+}
+
+.section1 h3 {
+    margin-top: 10px;
+    color: white;
+    margin-left: 10%;
+}
+
+.section2 {
+    align-items: flex-start;
+    flex-direction: column;
+    flex: 7;
+}
+
+.section2 h3 {
+    margin-top: 11.3%;
+    color: white;
+}
+
+.filters {
+    filter: invert(37%) sepia(23%) saturate(7485%) hue-rotate(341deg) brightness(98%) contrast(95%);
+}
+
+.filters:hover {
+    filter: invert(13%) sepia(84%) saturate(7478%) hue-rotate(1deg) brightness(103%) contrast(113%);
+    cursor: pointer;
+}
+/* 
+.popover_header {
+    background-color: black;
+}
+
+.bs-popover-end > .popover-arrow::after, .bs-popover-auto[data-popper-placement^=right] > .popover-arrow::after {
+    border-right-color:black;
+} */

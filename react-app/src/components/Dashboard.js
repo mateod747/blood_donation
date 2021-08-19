@@ -1,13 +1,21 @@
 
 import React, { Component } from 'react';
-import '../App.css';
+import '../App.scss';
 import '../layouts/Main.css';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import zero_plus from '../public/blood-types/0+.svg';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Popover from 'react-bootstrap/Popover'
+import { ProgressBar } from 'react-bootstrap';
 
+const popover = (
+    <Popover id="popover-basic">
+        <Popover.Header className="popover_header" as="h3">Trenutna zaliha</Popover.Header>
+        <Popover.Body className="popover_body">
+            <ProgressBar striped variant="danger" now={80} />
+        </Popover.Body>
+    </Popover>
+);
 
 class Dashboard extends Component {
     constructor(props) {
@@ -39,33 +47,31 @@ class Dashboard extends Component {
         this.fetchDonor();
     }
 
+
+
     render() {
         return (
             <div className="dashboard">
                 <div className="dashboard-body ">
                 </div>
-                <link
-                    rel="stylesheet"
-                    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-                    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-                    crossorigin="anonymous"
-                />
                 <div className="name">
                     {this.state.item.firstName} {this.state.item.lastName}
                 </div>
                 <div className="header">
-                    Osnovni podaci
+                    Nadzorna ploča
                 </div>
                 <div className="header">
                     <div className="line"></div>
                 </div>
                 <div className="dash">
                     <div className="card">
-                        <div className="section">
-
+                        <div className="section section1">
+                            <h3>Krvna grupa</h3>
+                            <OverlayTrigger trigger="hover" placement="right" overlay={popover}>
+                                <img src={zero_plus} width="150px" height="150px" class="filters"></img>
+                            </OverlayTrigger>
                         </div>
-                        <div className="section">
-
+                        <div className="section section2">
                         </div>
                     </div>
                 </div>
