@@ -7,6 +7,8 @@ import zero_plus from '../public/blood-types/0+.svg';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
 import { ProgressBar } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const popover = (
     <Popover id="popover-basic">
@@ -52,26 +54,39 @@ class Dashboard extends Component {
     render() {
         return (
             <div className="dashboard">
-                <div className="dashboard-body ">
+                <div className="dashboard-body">
                 </div>
                 <div className="name">
-                    {this.state.item.firstName} {this.state.item.lastName}
+                    Nadzorna ploča
                 </div>
                 <div className="header">
-                    Nadzorna ploča
+                    {this.state.item.firstName} {this.state.item.lastName}
                 </div>
                 <div className="header">
                     <div className="line"></div>
                 </div>
                 <div className="dash">
-                    <div className="card">
+                    <div className="card-layout">
                         <div className="section section1">
-                            <h3>Krvna grupa</h3>
-                            <OverlayTrigger trigger="hover" placement="right" overlay={popover}>
-                                <img src={zero_plus} width="150px" height="150px" class="filters"></img>
-                            </OverlayTrigger>
+                            <div className="section-area1" >
+                                <h3>Krvna grupa</h3>
+                                <OverlayTrigger trigger="hover" placement="right" overlay={popover}>
+                                    <img src={zero_plus} width="150px" height="150px" class="filters"></img>
+                                </OverlayTrigger>
+                            </div>
                         </div>
                         <div className="section section2">
+                            <div className="section-area2" >
+                                <Card bg="success">
+                                    <Card.Header><h4>Podaci</h4></Card.Header>
+                                    <ListGroup className="list" variant="flush">
+                                        <ListGroup.Item variant="success">Dob: 23 | Spol: M</ListGroup.Item>
+                                        <ListGroup.Item variant="success">Mjesto prebivališta: Hrv.branitelja 64, Ruščica 35208</ListGroup.Item>
+                                        <ListGroup.Item variant="success">E-mail: mateod747@gmail.com</ListGroup.Item>
+                                        <ListGroup.Item variant="success">Mob: +385 953938168</ListGroup.Item>
+                                    </ListGroup>
+                                </Card>
+                            </div>
                         </div>
                     </div>
                 </div>

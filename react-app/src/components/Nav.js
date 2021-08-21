@@ -14,15 +14,15 @@ function Nav() {
                     za <br></br>
                     praćenje  <br></br>
                     doniranja <br></br>
-                    krvi 
+                    krvi
                 </div>
                 <div className="link-div">
-                    <a href="localhost:3000/dashboard">
+                    <a href="http://localhost:3000/dashboard">
                         <div className="link">
                             Osnovni podaci
                         </div>
                     </a>
-                    <a href="localhost:3000/dashboardx">
+                    <a href="http://localhost:3000/donation-list">
                         <div className="link">
                             Povijest doniranja
                         </div>

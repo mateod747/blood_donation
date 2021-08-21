@@ -11,8 +11,8 @@
     position: absolute;
     width: 100%;
     min-height: 100vh;
-    /* background-image: url("../public/body.jpg");
-    background-size: cover; */
+    background-image: url("../public/body.jpg");
+    background-size: cover;
     opacity: 0.3;
     z-index: 0;
 }
@@ -57,7 +57,7 @@
     align-items: center;
 }
 
-.card {
+.card-layout {
     display: flex;
     flex: 0.9;
     margin-left: 5%;
@@ -72,10 +72,11 @@
 
 .section {
     display: flex;
+    flex-direction: column;
 }
 
 .section1 {
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     flex-direction: column;
     flex: 5;
@@ -83,24 +84,44 @@
 
 .section1 img {
     margin-top: 15px;
-    margin-left: 13%;
+    margin-left: 30%;
 }
 
 .section1 h3 {
-    margin-top: 10px;
+    margin-top: 7%;
     color: white;
-    margin-left: 10%;
+    margin-left: 25%;
 }
 
 .section2 {
     align-items: flex-start;
+    justify-content: center;
     flex-direction: column;
-    flex: 7;
+    flex: 8;
 }
 
 .section2 h3 {
-    margin-top: 11.3%;
     color: white;
+}
+
+.section-area1 {
+    display: flex;
+    flex: 0.8;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.section-area2 {
+    display: flex;
+    width: 90%;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.list {
+    text-align: left;
 }
 
 .filters {
@@ -111,11 +132,4 @@
     filter: invert(13%) sepia(84%) saturate(7478%) hue-rotate(1deg) brightness(103%) contrast(113%);
     cursor: pointer;
 }
-/* 
-.popover_header {
-    background-color: black;
-}
 
-.bs-popover-end > .popover-arrow::after, .bs-popover-auto[data-popper-placement^=right] > .popover-arrow::after {
-    border-right-color:black;
-} */
