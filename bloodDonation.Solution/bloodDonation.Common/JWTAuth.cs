@@ -24,7 +24,7 @@ namespace bloodDonation.Common
                 {
                     new Claim("UserRole", claim),
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(700),
                 Issuer = myIssuer,
                 Audience = myAudience,
                 SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
@@ -55,7 +55,7 @@ namespace bloodDonation.Common
                     IssuerSigningKey = mySecurityKey
                 }, out SecurityToken validatedToken);
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }

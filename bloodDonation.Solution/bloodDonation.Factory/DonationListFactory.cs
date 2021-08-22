@@ -56,6 +56,7 @@ namespace bloodDonation.Factory
             var skipCount = pageSize * (page - 1);
 
             donations.ListCount = listCount;
+            donations.Donations = donations.Donations.OrderByDescending(x => x.DateDonated).ToList();
             donations.Donations = donations.Donations.Skip(skipCount).Take(pageSize).ToList();
             return donations;
         }

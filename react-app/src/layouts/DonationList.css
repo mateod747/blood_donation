@@ -16,3 +16,15 @@
     opacity: 0.3;
     z-index: 0;
 }
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    flex: 10;
+}
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
