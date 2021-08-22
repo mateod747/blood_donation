@@ -14,9 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\bloodDonation.Common\bloodDonation.Common.csproj" />
-    <ProjectReference Include="..\bloodDonation.DAL\bloodDonation.DAL.csproj" />
     <ProjectReference Include="..\bloodDonation.Factory\bloodDonation.Factory.csproj" />
-    <ProjectReference Include="..\bloodDonation.Model\bloodDonation.Model.csproj" />
   </ItemGroup>
 
 </Project>

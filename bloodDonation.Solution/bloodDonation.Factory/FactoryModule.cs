@@ -12,6 +12,11 @@ namespace bloodDonation.Factory
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<DonorFactory>().As<IDonorFactory>().InstancePerLifetimeScope();
+            builder.RegisterType<BloodDonationFactory>().As<IBloodDonationFactory>().InstancePerLifetimeScope();
+            builder.RegisterType<BloodTransactionFactory>().As<IBloodTransactionFactory>().InstancePerLifetimeScope();
+            builder.RegisterType<MedicalPersonnelFactory>().As<IMedicalPersonnelFactory>().InstancePerLifetimeScope();
+            builder.RegisterType<RecipientFactory>().As<IRecipientFactory>().InstancePerLifetimeScope();
+            builder.RegisterType<DonationListFactory>().As<IDonationListFactory>().InstancePerLifetimeScope();
             base.Load(builder);
         }
     }

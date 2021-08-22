@@ -112,24 +112,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BloodDonationFactory.cs" />
+    <Compile Include="BloodTransactionFactory.cs" />
+    <Compile Include="DonationListFactory.cs" />
     <Compile Include="DonorFactory.cs" />
     <Compile Include="FactoryModule.cs" />
+    <Compile Include="IBloodDonationFactory.cs" />
+    <Compile Include="IBloodTransactionFactory.cs" />
+    <Compile Include="IDonationListFactory.cs" />
     <Compile Include="IDonorFactory.cs" />
+    <Compile Include="IMedicalPersonnelFactory.cs" />
+    <Compile Include="IRecipientFactory.cs" />
+    <Compile Include="MedicalPersonnelFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecipientFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\bloodDonation.Common\bloodDonation.Common.csproj">
+      <Project>{02e6ffa1-a757-4f03-94e1-30991fe0aca7}</Project>
+      <Name>bloodDonation.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\bloodDonation.DAL\bloodDonation.DAL.csproj">
       <Project>{B45EDEB3-4ED5-42A1-9E80-DC3E90E5DE85}</Project>
       <Name>bloodDonation.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\bloodDonation.Model\bloodDonation.Model.csproj">
-      <Project>{CD4679FB-418F-4410-BC8B-3E7C4CBE5D8E}</Project>
+      <Project>{cd4679fb-418f-4410-bc8b-3e7c4cbe5d8e}</Project>
       <Name>bloodDonation.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

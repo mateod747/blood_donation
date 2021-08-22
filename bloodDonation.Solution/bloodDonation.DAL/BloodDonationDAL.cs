@@ -41,6 +41,40 @@ namespace bloodDonation.DAL
             return bloodDonation;
         }
 
+        public async Task<List<BloodDonationModel>> GetBloodDonationsAsync(int id)
+        {
+            var bloodDonations = new List<BloodDonationModel>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string queryString = "Select * from BloodDonation where donorID = @id;";
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@id", id);
+
+                connection.Open();
+
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        bloodDonations.Add(
+                            new BloodDonationModel()
+                            {
+                                BloodID = reader.GetInt32(reader.GetOrdinal("bloodID")),
+                                DonorID = reader.GetInt32(reader.GetOrdinal("donorID")),
+                                Quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
+                                DateDonated = DateTime.Parse(reader["dateDonated"].ToString())
+                            }
+                        );
+                    }
+                }
+            }
+            return bloodDonations;
+        }
+
         public async Task<bool> PostBloodDonation(BloodDonationModel model)
         {
             var success = false;

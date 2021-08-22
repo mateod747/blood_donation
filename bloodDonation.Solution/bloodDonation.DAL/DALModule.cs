@@ -12,6 +12,10 @@ namespace bloodDonation.DAL
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<DonorDAL>().As<IDonorDAL>().InstancePerLifetimeScope();
+            builder.RegisterType<BloodDonationDAL>().As<IBloodDonationDAL>().InstancePerLifetimeScope();
+            builder.RegisterType<BloodTransactionDAL>().As<IBloodTransactionDAL>().InstancePerLifetimeScope();
+            builder.RegisterType<MedicalPersonnelDAL>().As<IMedicalPersonnelDAL>().InstancePerLifetimeScope();
+            builder.RegisterType<RecipientDAL>().As<IRecipientDAL>().InstancePerLifetimeScope();
             base.Load(builder);
         }
     }
