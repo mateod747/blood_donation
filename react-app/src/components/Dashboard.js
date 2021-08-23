@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import '../App.scss';
 import '../layouts/Main.css';
-import Button from 'react-bootstrap/Button';
 import zero_plus from '../public/blood-types/0+.svg';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
@@ -70,8 +69,8 @@ class Dashboard extends Component {
                         <div className="section section1">
                             <div className="section-area1" >
                                 <h3>Krvna grupa</h3>
-                                <OverlayTrigger trigger="hover" placement="right" overlay={popover}>
-                                    <img src={zero_plus} width="150px" height="150px" class="filters"></img>
+                                <OverlayTrigger trigger={['hover', 'focus']} placement="right" overlay={popover}>
+                                    <img src={zero_plus} width="150px" height="150px" className="filters" alt="" />
                                 </OverlayTrigger>
                             </div>
                         </div>

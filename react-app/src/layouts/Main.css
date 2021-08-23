@@ -1,6 +1,6 @@
 .dashboard {
     display: flex;
-    flex: 83%;
+    flex: 5;
     min-height: 100vh;
     flex-direction: column;
     background-color: rgb(255, 255, 255);
