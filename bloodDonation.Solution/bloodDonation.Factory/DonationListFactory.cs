@@ -41,9 +41,9 @@ namespace bloodDonation.Factory
                 donations.Donations.Add(
                     new DonationDto()
                     {
-                        DateDonated = x.DateDonated,
+                        DateDonated = x.DateDonated.ToString(),
                         Quantity = x.Quantity,
-                        DateOut = bloodTransaction.DateOut,
+                        DateOut = bloodTransaction.DateOut.ToString(),
                         PersonnelName = $"{personnel.FirstName} {personnel.LastName}",
                         PersonnelWorkPhone = personnel.Phone,
                         RecipientName = $"{recipient.FirstName} {recipient.LastName}",
@@ -72,7 +72,7 @@ namespace bloodDonation.Factory
         public class DonationDto
         {
             // donator part
-            public DateTime DateDonated { get; set; }
+            public string DateDonated { get; set; }
             public int Quantity { get; set; }
 
             // medical personnel
@@ -82,7 +82,7 @@ namespace bloodDonation.Factory
             // recipient part
             public string RecipientName { get; set; }
             public string RecipientBloodType { get; set; }
-            public DateTime DateOut { get; set; }
+            public string DateOut { get; set; }
         }
 
         #endregion
