@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BloodDonationModel.cs" />
+    <Compile Include="BloodStockModel.cs" />
     <Compile Include="BloodTransactionModel.cs" />
     <Compile Include="DonorModel.cs" />
     <Compile Include="LoginData.cs" />

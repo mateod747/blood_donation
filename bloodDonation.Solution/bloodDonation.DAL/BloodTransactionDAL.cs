@@ -37,10 +37,10 @@ namespace bloodDonation.DAL
                         bloodTransaction.EmpID = Guid.Parse(reader["empID"].ToString());
                         bloodTransaction.Quantity = reader.GetInt32(reader.GetOrdinal("quantity"));
                         bloodTransaction.DateOut = DateTime.Parse(reader["dateOut"].ToString());
-                        bloodTransaction.Hemoglobin = reader.GetOrdinal("hemoglobin");
+                        bloodTransaction.Hemoglobin = (int)reader["hemoglobin"];
                         bloodTransaction.BloodPressure = reader["bloodPressure"].ToString();
                         bloodTransaction.Notes = reader["notes"].ToString();
-                        bloodTransaction.Success = Boolean.Parse(reader.GetOrdinal("success").ToString());
+                        bloodTransaction.Success = (bool)reader["success"];
                     }
                 }
             }

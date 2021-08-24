@@ -43,14 +43,16 @@ namespace bloodDonation.Web.Controllers
 
                     modelDto = new DonorModelDto()
                     {
-                        DonorID = model.DonorID,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Address = model.Address,
-                        Email = model.Email,
-                        Phone = model.Phone,
-                        BloodType = model.BloodType,
-                        Gender = model.Gender
+                        DonorID = model.Item1.DonorID,
+                        FirstName = model.Item1.FirstName,
+                        LastName = model.Item1.LastName,
+                        Address = model.Item1.Address,
+                        Email = model.Item1.Email,
+                        Phone = model.Item1.Phone,
+                        BloodType = model.Item1.BloodType,
+                        Gender = model.Item1.Gender,
+                        BloodStock = model.Item2,
+                        Age = model.Item1.Age
                     };
                 }
 
@@ -76,7 +78,8 @@ namespace bloodDonation.Web.Controllers
                     Email = modelDto.Email,
                     Phone = modelDto.Phone,
                     BloodType = modelDto.BloodType,
-                    Gender = modelDto.Gender
+                    Gender = modelDto.Gender,
+                    Age = modelDto.Age
                 };
 
                 var success = await _donorFactory.PostDonor(model);
@@ -103,7 +106,8 @@ namespace bloodDonation.Web.Controllers
                     Email = modelDto.Email,
                     Phone = modelDto.Phone,
                     BloodType = modelDto.BloodType,
-                    Gender = modelDto.Gender
+                    Gender = modelDto.Gender,
+                    Age = modelDto.Age
                 };
 
                 var success = await _donorFactory.EditDonor(model);
@@ -138,11 +142,14 @@ namespace bloodDonation.Web.Controllers
         public Guid DonorID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public int Age { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string BloodType { get; set; }
         public Gender Gender { get; set; }
+        public int BloodStock { get; set; }
     }
+
     #endregion
 }

@@ -16,7 +16,7 @@ namespace bloodDonation.Model
         public string Phone { get; set; }
         public string BloodType { get; set; }
         public Gender Gender { get; set; }
-
+        public int Age { get; set; }
     }
 
     public enum Gender

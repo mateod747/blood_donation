@@ -38,7 +38,8 @@ namespace bloodDonation.DAL
                         donor.Email = reader["email"].ToString();
                         donor.Phone = reader["phone"].ToString();
                         donor.BloodType = reader["bloodType"].ToString();
-                        donor.Gender = (Gender)reader.GetOrdinal("gender");
+                        donor.Gender = (Gender)reader["gender"];
+                        donor.Age = (int)reader["age"];
                     }
                 }
             }
@@ -57,7 +58,8 @@ namespace bloodDonation.DAL
                                                                 @address, 
                                                                 @email,
                                                                 @phone,
-                                                                @bloodType);";
+                                                                @bloodType,
+                                                                @age);";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.AddWithValue("@firstName", model.FirstName);
@@ -68,6 +70,7 @@ namespace bloodDonation.DAL
                 command.Parameters.AddWithValue("@bloodType", model.BloodType);
                 command.Parameters.AddWithValue("@gender", (int)model.Gender);
                 command.Parameters.AddWithValue("@id", model.DonorID);
+                command.Parameters.AddWithValue("@age", model.Age);
 
                 connection.Open();
 
@@ -88,6 +91,7 @@ namespace bloodDonation.DAL
                                                         phone = @phone,
                                                         bloodType = @bloodType,
                                                         gender = @gender,
+                                                        age = @age
                                                         where donorID = @id;";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -99,6 +103,7 @@ namespace bloodDonation.DAL
                 command.Parameters.AddWithValue("@bloodType", model.BloodType);
                 command.Parameters.AddWithValue("@id", model.DonorID);
                 command.Parameters.AddWithValue("@gender", (int)model.Gender);
+                command.Parameters.AddWithValue("@age", model.Age);
 
                 connection.Open();
 

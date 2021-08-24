@@ -16,6 +16,7 @@ namespace bloodDonation.DAL
             builder.RegisterType<BloodTransactionDAL>().As<IBloodTransactionDAL>().InstancePerLifetimeScope();
             builder.RegisterType<MedicalPersonnelDAL>().As<IMedicalPersonnelDAL>().InstancePerLifetimeScope();
             builder.RegisterType<RecipientDAL>().As<IRecipientDAL>().InstancePerLifetimeScope();
+            builder.RegisterType<BloodStockDAL>().As<IBloodStockDAL>().InstancePerLifetimeScope();
             base.Load(builder);
         }
     }

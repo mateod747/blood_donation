@@ -6,6 +6,7 @@ import Pagination from 'react-bootstrap/Pagination';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import success from '../public/success.svg';
+import fail from '../public/fail.svg';
 import Modal from 'react-bootstrap/Modal';
 
 let items = [];
@@ -25,20 +26,36 @@ function MyVerticallyCenteredModal(props) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h4>Zaposlenik: {props.donation.personnelName}</h4>
-                <p> <br></br>
-                    Mob: {props.donation.personnelWorkPhone}
-                </p>
+                <h4><u>Zaposlenik: {props.donation.personnelName}</u></h4>
+                <p> <br></br> Mob: {props.donation.personnelWorkPhone} <br></br> </p>
+                <h4><u>Podaci s doniranja:</u> <br></br></h4>
+                <p> Razina hemoglobina: {props.donation.hemoglobin} g/L <br></br></p>
+                <p> Krvni tlak: {props.donation.bloodPressure} mmHg <br></br></p>
+                {props.donation.notes !== "" ? <><h5><u>Komentar:</u></h5> <p> {props.donation.notes} <br></br></p></> : null}
+
                 {
-                    props.donation.recipientName !== ' ' ?
+                    props.donation.recipientName !== "" ?
                         <div>
-                            <p>
-                                Vaša krv je darovana {props.donation.dateOut} 😀 <br></br>
-                                Primatelj: {props.donation.recipientName} <br></br>
-                                Krvna grupa: {props.donation.recipientBloodType} 
-                            </p>
+                            {props.donation.anon === 0 ?
+                                <p>
+                                    Vaša krv je darovana {props.donation.dateOut} 😀 <br></br>
+                                    Primatelj: {props.donation.recipientName} <br></br>
+                                    Krvna grupa: {props.donation.recipientBloodType}
+                                </p> : null
+                            }
+                            {props.donation.anon === 1 ?
+                                <p>
+                                    Vaša krv je darovana anonimno. <br></br>
+                                </p> : null
+                            }
+                            {props.donation.anon === 2 ?
+                                <p>
+                                    Vaša krv je darovana u znanstvene svrhe {props.donation.dateOut} 😀 <br></br>
+                                    Primatelj: {props.donation.recipientName} <br></br>
+                                </p> : null
+                            }
                         </div>
-                        : <p>Krv čeka primatelja</p>
+                        : props.donation.recipientName !== null ? null : <p>Krv čeka primatelja</p>
                 }
             </Modal.Body>
             <Modal.Footer>
@@ -135,14 +152,14 @@ class DonationList extends Component {
                         {this.state.currentPage.donations.map(item => {
                             return (
                                 <Card className="donation-card" key={item.dateDonated}>
-                                    <Card.Header className="donation-header" bg="success"><h5>{item.dateDonated}</h5></Card.Header>
-                                    <Card.Body variant="success" className="donation-card-body">
-                                        <Card.Title>Količina: {item.quantity}ml</Card.Title>
+                                    <Card.Header className="donation-header-success" bg="success"><h5>{item.dateDonated}</h5></Card.Header>
+                                    <Card.Body className="donation-card-body">
+                                        <Card.Title>{item.quantity > 0 ? "Količina: " + item.quantity + "ml" : ":("}</Card.Title>
                                         <Card.Text>
-                                            Donacija uspješno provedena
+                                            {item.notes !== "" ? item.notes : item.success ? "Donacija uspješna" : "Donacija neuspješna"}
                                         </Card.Text>
-                                        <img src={success} className="success-check" alt="" />
-                                        <Button variant="success" onClick={() => this.setState({
+                                        <img src={item.success ? success : fail} className={item.success ? "status-check success-check" : "status-check fail-check"} alt="" />
+                                        <Button variant="dark" onClick={() => this.setState({
                                             modalShow: true,
                                             modalDonation: item
                                         })}>

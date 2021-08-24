@@ -113,10 +113,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BloodDonationDAL.cs" />
+    <Compile Include="BloodStockDAL.cs" />
     <Compile Include="BloodTransactionDAL.cs" />
     <Compile Include="DALModule.cs" />
     <Compile Include="DonorDAL.cs" />
     <Compile Include="IBloodDonationDAL.cs" />
+    <Compile Include="IBloodStockDAL.cs" />
     <Compile Include="IBloodTransactionDAL.cs" />
     <Compile Include="IDonorDAL.cs" />
     <Compile Include="IMedicalPersonnelDAL.cs" />

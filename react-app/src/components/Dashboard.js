@@ -9,14 +9,14 @@ import { ProgressBar } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-const popover = (
-    <Popover id="popover-basic">
+function popover(stock) {
+    return (<Popover id="popover-basic">
         <Popover.Header className="popover_header" as="h3">Trenutna zaliha</Popover.Header>
         <Popover.Body className="popover_body">
-            <ProgressBar striped variant="danger" now={80} />
+            <ProgressBar striped variant="danger" now={stock} />
         </Popover.Body>
-    </Popover>
-);
+    </Popover>);
+}
 
 class Dashboard extends Component {
     constructor(props) {
@@ -69,7 +69,7 @@ class Dashboard extends Component {
                         <div className="section section1">
                             <div className="section-area1" >
                                 <h3>Krvna grupa</h3>
-                                <OverlayTrigger trigger={['hover', 'focus']} placement="right" overlay={popover}>
+                                <OverlayTrigger trigger={['hover', 'focus']} placement="right" overlay={popover(this.state.item.bloodStock)}>
                                     <img src={zero_plus} width="150px" height="150px" className="filters" alt="" />
                                 </OverlayTrigger>
                             </div>
@@ -79,7 +79,13 @@ class Dashboard extends Component {
                                 <Card bg="success">
                                     <Card.Header><h4>Podaci</h4></Card.Header>
                                     <ListGroup className="list" variant="flush">
-                                        <ListGroup.Item variant="success">Dob: 23 | Spol: M</ListGroup.Item>
+                                        <ListGroup.Item variant="success">
+                                            Dob: {this.state.item.age} | 
+                                            Spol: 
+                                            {this.state.item.gender === 0 ? " M" : null} 
+                                            {this.state.item.gender === 1 ? " Ž" : null}                                        
+                                            {this.state.item.gender === 2 ? " Drugo": null}                                                                               
+                                        </ListGroup.Item>
                                         <ListGroup.Item variant="success">Mjesto prebivališta: Hrv.branitelja 64, Ruščica 35208</ListGroup.Item>
                                         <ListGroup.Item variant="success">E-mail: mateod747@gmail.com</ListGroup.Item>
                                         <ListGroup.Item variant="success">Mob: +385 953938168</ListGroup.Item>

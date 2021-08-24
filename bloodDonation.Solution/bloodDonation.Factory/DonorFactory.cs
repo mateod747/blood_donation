@@ -11,16 +11,49 @@ namespace bloodDonation.Factory
     public class DonorFactory : IDonorFactory
     {
         private readonly IDonorDAL _donorDal;
+        private readonly IBloodStockDAL _bloodStockDAL;
 
-        public DonorFactory(IDonorDAL donorDal)
+        public DonorFactory(IDonorDAL donorDal, IBloodStockDAL bloodStockDAL)
         {
             _donorDal = donorDal;
-        }       
+            _bloodStockDAL = bloodStockDAL;
+        }
 
-        public async Task<DonorModel> GetDonor(Guid id)
+        public async Task<(DonorModel, int)> GetDonor(Guid id)
         {
             var donor = await _donorDal.GetDonor(id);
-            return donor;
+            var bloodStock = await _bloodStockDAL.GetBloodStockAsync();
+
+            var stock = 0;
+
+            switch (donor.BloodType)
+            {
+                case "0-":
+                    stock = bloodStock.ZeroMinus;
+                    break;
+                case "0+":
+                    stock = bloodStock.ZeroPlus;
+                    break;
+                case "A-":
+                    stock = bloodStock.AMinus;
+                    break;
+                case "A+":
+                    stock = bloodStock.APlus;
+                    break;
+                case "B-":
+                    stock = bloodStock.BMinus;
+                    break;
+                case "B+":
+                    stock = bloodStock.BPlus;
+                    break;
+                case "AB-":
+                    stock = bloodStock.ABMinus;
+                    break;
+                case "AB+":
+                    stock = bloodStock.ABPlus;
+                    break;
+            }
+            return (donor, stock);
         }
 
         public async Task<bool> PostDonor(DonorModel model)

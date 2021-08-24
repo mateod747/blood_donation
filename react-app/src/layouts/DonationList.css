@@ -83,14 +83,27 @@
     color: white;
 }
 
-.success-check {
+.status-check {
     width: 25%;
     height: 25%;
     margin-bottom: 10%;
 }
 
-.donation-header {
-    background-color: #469264;
+.success-check {
+    filter: invert(53%) sepia(29%) saturate(504%) hue-rotate(90deg) brightness(97%) contrast(86%);
+}
+
+.fail-check {
+    filter: invert(32%) sepia(97%) saturate(2772%) hue-rotate(344deg) brightness(103%) contrast(91%);
+}
+
+.donation-header-success {
+    background-color: #222222;
+    color: rgb(247, 229, 195);
+}
+
+.donation-header-fail {
+    background-color: #F44336;
     color: rgb(247, 229, 195);
 }
 

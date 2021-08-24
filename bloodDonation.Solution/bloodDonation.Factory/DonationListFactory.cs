@@ -51,7 +51,8 @@ namespace bloodDonation.Factory
                         PersonnelName = $"{personnel.FirstName} {personnel.LastName}",
                         PersonnelWorkPhone = personnel.Phone,
                         RecipientName = $"{recipient.Name}",
-                        RecipientBloodType = recipient.BloodType
+                        RecipientBloodType = recipient.BloodType,
+                        Anon = recipient.Anon
                     }
                 );
             }
@@ -93,6 +94,7 @@ namespace bloodDonation.Factory
             public string RecipientName { get; set; }
             public string RecipientBloodType { get; set; }
             public string DateOut { get; set; }
+            public Anon Anon { get; set; }
         }
 
         #endregion

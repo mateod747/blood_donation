@@ -37,7 +37,7 @@ namespace bloodDonation.DAL
                         recipient.Email = reader["email"].ToString();
                         recipient.Phone = reader["phone"].ToString();
                         recipient.BloodType = reader["bloodType"].ToString();
-                        recipient.Anon = (Anon)reader.GetOrdinal("anon");
+                        recipient.Anon = (Anon)reader["anon"];
                     }
                 }
             }
