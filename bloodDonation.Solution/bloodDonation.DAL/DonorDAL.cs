@@ -12,7 +12,7 @@ namespace bloodDonation.DAL
     {
         private readonly string connectionString = @"Server=mdubinjak;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        public async Task<DonorModel> GetDonor(int id)
+        public async Task<DonorModel> GetDonor(Guid id)
         {
             var donor = new DonorModel();
 
@@ -33,11 +33,12 @@ namespace bloodDonation.DAL
                     {
                         donor.FirstName = reader["firstName"].ToString();
                         donor.LastName = reader["lastName"].ToString();
-                        donor.DonorID = reader.GetInt32(reader.GetOrdinal("donorID"));
+                        donor.DonorID = Guid.Parse(reader["donorID"].ToString());
                         donor.Address = reader["address"].ToString();
                         donor.Email = reader["email"].ToString();
                         donor.Phone = reader["phone"].ToString();
                         donor.BloodType = reader["bloodType"].ToString();
+                        donor.Gender = (Gender)reader.GetOrdinal("gender");
                     }
                 }
             }
@@ -49,8 +50,10 @@ namespace bloodDonation.DAL
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = @"Insert into Donor values(@firstName, 
-                                                                @lastName,  
+                string queryString = @"Insert into Donor values(@id,
+                                                                @firstName, 
+                                                                @lastName, 
+                                                                @gender,
                                                                 @address, 
                                                                 @email,
                                                                 @phone,
@@ -63,6 +66,8 @@ namespace bloodDonation.DAL
                 command.Parameters.AddWithValue("@email", model.Email);
                 command.Parameters.AddWithValue("@phone", model.Phone);
                 command.Parameters.AddWithValue("@bloodType", model.BloodType);
+                command.Parameters.AddWithValue("@gender", (int)model.Gender);
+                command.Parameters.AddWithValue("@id", model.DonorID);
 
                 connection.Open();
 
@@ -81,7 +86,8 @@ namespace bloodDonation.DAL
                                                         address = @address, 
                                                         email = @email,
                                                         phone = @phone,
-                                                        bloodType = @bloodType
+                                                        bloodType = @bloodType,
+                                                        gender = @gender,
                                                         where donorID = @id;";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -92,6 +98,7 @@ namespace bloodDonation.DAL
                 command.Parameters.AddWithValue("@phone", model.Phone);
                 command.Parameters.AddWithValue("@bloodType", model.BloodType);
                 command.Parameters.AddWithValue("@id", model.DonorID);
+                command.Parameters.AddWithValue("@gender", (int)model.Gender);
 
                 connection.Open();
 
@@ -100,7 +107,7 @@ namespace bloodDonation.DAL
             return success;
         }
 
-        public async Task<bool> DeleteDonor(int id)
+        public async Task<bool> DeleteDonor(Guid id)
         {
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))

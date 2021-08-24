@@ -8,8 +8,9 @@ namespace bloodDonation.Model
 {
     public class LoginData
     {
-        public int donorID { get; set; }
-        public string username { get; set; }
-        public string passwordHash { get; set; }
+        public Guid DonorID { get; set; }
+        public string Username { get; set; }
+        public string PasswordHash { get; set; }
+        public bool Admin { get; set; }
     }
 }

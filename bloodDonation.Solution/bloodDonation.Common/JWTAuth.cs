@@ -55,7 +55,7 @@ namespace bloodDonation.Common
                     IssuerSigningKey = mySecurityKey
                 }, out SecurityToken validatedToken);
             }
-            catch (Exception ex)
+            catch 
             {
                 return false;
             }

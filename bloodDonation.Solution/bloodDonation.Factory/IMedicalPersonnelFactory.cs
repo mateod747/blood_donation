@@ -9,9 +9,9 @@ namespace bloodDonation.Factory
 {
     public interface IMedicalPersonnelFactory
     {
-        Task<MedicalPersonnelModel> GetMedicalPersonnel(int id);
+        Task<MedicalPersonnelModel> GetMedicalPersonnel(Guid id);
         Task<bool> PostMedicalPersonnel(MedicalPersonnelModel model);
         Task<bool> EditMedicalPersonnel(MedicalPersonnelModel model);
-        Task<bool> DeleteMedicalPersonnel(int id);
+        Task<bool> DeleteMedicalPersonnel(Guid id);
     }
 }

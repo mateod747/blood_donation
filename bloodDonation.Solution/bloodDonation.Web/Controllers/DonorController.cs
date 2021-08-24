@@ -24,7 +24,7 @@ namespace bloodDonation.Web.Controllers
 
         [EnableCors]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDonor(int id, [FromHeader] string token)
+        public async Task<IActionResult> GetDonor(Guid id, [FromHeader] string token)
         {
             try
             {
@@ -49,7 +49,8 @@ namespace bloodDonation.Web.Controllers
                         Address = model.Address,
                         Email = model.Email,
                         Phone = model.Phone,
-                        BloodType = model.BloodType
+                        BloodType = model.BloodType,
+                        Gender = model.Gender
                     };
                 }
 
@@ -74,7 +75,8 @@ namespace bloodDonation.Web.Controllers
                     Address = modelDto.Address,
                     Email = modelDto.Email,
                     Phone = modelDto.Phone,
-                    BloodType = modelDto.BloodType
+                    BloodType = modelDto.BloodType,
+                    Gender = modelDto.Gender
                 };
 
                 var success = await _donorFactory.PostDonor(model);
@@ -100,7 +102,8 @@ namespace bloodDonation.Web.Controllers
                     Address = modelDto.Address,
                     Email = modelDto.Email,
                     Phone = modelDto.Phone,
-                    BloodType = modelDto.BloodType
+                    BloodType = modelDto.BloodType,
+                    Gender = modelDto.Gender
                 };
 
                 var success = await _donorFactory.EditDonor(model);
@@ -114,7 +117,7 @@ namespace bloodDonation.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDonor(int id)
+        public async Task<IActionResult> DeleteDonor(Guid id)
         {
             try
             {
@@ -132,13 +135,14 @@ namespace bloodDonation.Web.Controllers
     #region Models
     public class DonorModelDto
     {
-        public int DonorID { get; set; }
+        public Guid DonorID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string BloodType { get; set; }
+        public Gender Gender { get; set; }
     }
     #endregion
 }

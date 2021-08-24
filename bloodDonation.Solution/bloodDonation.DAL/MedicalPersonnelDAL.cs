@@ -12,7 +12,7 @@ namespace bloodDonation.DAL
     {
         private readonly string connectionString = @"Server=mdubinjak;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        public async Task<MedicalPersonnelModel> GetMedicalPersonnel(int id)
+        public async Task<MedicalPersonnelModel> GetMedicalPersonnel(Guid id)
         {
             var medicalPersonnel = new MedicalPersonnelModel();
 
@@ -33,7 +33,7 @@ namespace bloodDonation.DAL
                     {
                         medicalPersonnel.FirstName = reader["firstName"].ToString();
                         medicalPersonnel.LastName = reader["lastName"].ToString();
-                        medicalPersonnel.EmpID = reader.GetInt32(reader.GetOrdinal("empID"));
+                        medicalPersonnel.EmpID = Guid.Parse(reader["empID"].ToString());
                         medicalPersonnel.Address = reader["address"].ToString();
                         medicalPersonnel.Email = reader["email"].ToString();
                         medicalPersonnel.Phone = reader["phone"].ToString();
@@ -48,7 +48,8 @@ namespace bloodDonation.DAL
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = @"Insert into MedicalPersonnel values(@firstName, 
+                string queryString = @"Insert into MedicalPersonnel values(@id,
+                                                                @firstName, 
                                                                 @lastName,  
                                                                 @address, 
                                                                 @email,
@@ -60,6 +61,7 @@ namespace bloodDonation.DAL
                 command.Parameters.AddWithValue("@address", model.Address);
                 command.Parameters.AddWithValue("@email", model.Email);
                 command.Parameters.AddWithValue("@phone", model.Phone);
+                command.Parameters.AddWithValue("@id", model.EmpID);
 
                 connection.Open();
 
@@ -95,7 +97,7 @@ namespace bloodDonation.DAL
             return success;
         }
 
-        public async Task<bool> DeleteMedicalPersonnel(int id)
+        public async Task<bool> DeleteMedicalPersonnel(Guid id)
         {
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))

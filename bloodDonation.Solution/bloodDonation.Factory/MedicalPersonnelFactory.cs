@@ -17,13 +17,14 @@ namespace bloodDonation.Factory
             _medicalPersonnelDAL = medicalPersonnelDAL;
         }
 
-        public async Task<MedicalPersonnelModel> GetMedicalPersonnel(int id)
+        public async Task<MedicalPersonnelModel> GetMedicalPersonnel(Guid id)
         {
             return await _medicalPersonnelDAL.GetMedicalPersonnel(id);
         }
 
         public async Task<bool> PostMedicalPersonnel(MedicalPersonnelModel model)
         {
+            model.EmpID = Guid.NewGuid();
             return await _medicalPersonnelDAL.PostMedicalPersonnel(model);
         }
 
@@ -32,7 +33,7 @@ namespace bloodDonation.Factory
             return await _medicalPersonnelDAL.EditMedicalPersonnel(model);
         }
 
-        public async Task<bool> DeleteMedicalPersonnel(int id)
+        public async Task<bool> DeleteMedicalPersonnel(Guid id)
         {
             return await _medicalPersonnelDAL.DeleteMedicalPersonnel(id);
         }

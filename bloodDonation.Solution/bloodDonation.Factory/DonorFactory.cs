@@ -17,7 +17,7 @@ namespace bloodDonation.Factory
             _donorDal = donorDal;
         }       
 
-        public async Task<DonorModel> GetDonor(int id)
+        public async Task<DonorModel> GetDonor(Guid id)
         {
             var donor = await _donorDal.GetDonor(id);
             return donor;
@@ -25,6 +25,7 @@ namespace bloodDonation.Factory
 
         public async Task<bool> PostDonor(DonorModel model)
         {
+            model.DonorID = Guid.NewGuid();
             var success = await _donorDal.PostDonor(model);
             return success;
         }
@@ -35,7 +36,7 @@ namespace bloodDonation.Factory
             return success;
         }
 
-        public async Task<bool> DeleteDonor(int id)
+        public async Task<bool> DeleteDonor(Guid id)
         {
             var success = await _donorDal.DeleteDonor(id);
             return success;

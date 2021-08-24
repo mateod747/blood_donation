@@ -9,6 +9,6 @@ namespace bloodDonation.Factory
 {
     public interface IDonationListFactory
     {
-        Task<DonationListDto> GetDonationListAsync(int page, int pageSize, int id);
+        Task<DonationListDto> GetDonationListAsync(int page, int pageSize, Guid id);
     }
 }

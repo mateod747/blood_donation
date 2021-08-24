@@ -12,7 +12,7 @@ namespace bloodDonation.DAL
     {
         private readonly string connectionString = @"Server=mdubinjak;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        public async Task<RecipientModel> GetRecipient(int id)
+        public async Task<RecipientModel> GetRecipient(Guid id)
         {
             var recipient = new RecipientModel();
 
@@ -31,13 +31,13 @@ namespace bloodDonation.DAL
                 {
                     while (reader.Read())
                     {
-                        recipient.FirstName = reader["firstName"].ToString();
-                        recipient.LastName = reader["lastName"].ToString();
-                        recipient.RecipientID = reader.GetInt32(reader.GetOrdinal("recipientID"));
+                        recipient.Name = reader["name"].ToString();
+                        recipient.RecipientID = Guid.Parse(reader["recipientID"].ToString());
                         recipient.Address = reader["address"].ToString();
                         recipient.Email = reader["email"].ToString();
                         recipient.Phone = reader["phone"].ToString();
                         recipient.BloodType = reader["bloodType"].ToString();
+                        recipient.Anon = (Anon)reader.GetOrdinal("anon");
                     }
                 }
             }
@@ -49,20 +49,22 @@ namespace bloodDonation.DAL
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = @"Insert into Recipient values(@firstName, 
-                                                                @lastName,  
+                string queryString = @"Insert into Recipient values(@id,
+                                                                @name 
                                                                 @address, 
                                                                 @email,
                                                                 @phone,
-                                                                @bloodType);";
+                                                                @bloodType,
+                                                                @anon);";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@firstName", model.FirstName);
-                command.Parameters.AddWithValue("@lastName", model.LastName);
+                command.Parameters.AddWithValue("@name", model.Name);
                 command.Parameters.AddWithValue("@address", model.Address);
                 command.Parameters.AddWithValue("@email", model.Email);
                 command.Parameters.AddWithValue("@phone", model.Phone);
                 command.Parameters.AddWithValue("@bloodType", model.BloodType);
+                command.Parameters.AddWithValue("@id", model.RecipientID);
+                command.Parameters.AddWithValue("@anon", (int)model.Anon);
 
                 connection.Open();
 
@@ -76,22 +78,22 @@ namespace bloodDonation.DAL
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = @"Update Recipient set firstName = @firstName, 
-                                                        lastName = @lastName,  
+                string queryString = @"Update Recipient set name = @name, 
                                                         address = @address, 
                                                         email = @email,
                                                         phone = @phone,
-                                                        bloodType = @bloodType
+                                                        bloodType = @bloodType,
+                                                        anon = @anon,
                                                         where recipientID = @id;";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@firstName", model.FirstName);
-                command.Parameters.AddWithValue("@lastName", model.LastName);
+                command.Parameters.AddWithValue("@name", model.Name);
                 command.Parameters.AddWithValue("@address", model.Address);
                 command.Parameters.AddWithValue("@email", model.Email);
                 command.Parameters.AddWithValue("@phone", model.Phone);
                 command.Parameters.AddWithValue("@bloodType", model.BloodType);
                 command.Parameters.AddWithValue("@id", model.RecipientID);
+                command.Parameters.AddWithValue("@anon", (int)model.Anon);
 
                 connection.Open();
 
@@ -100,7 +102,7 @@ namespace bloodDonation.DAL
             return success;
         }
 
-        public async Task<bool> DeleteRecipient(int id)
+        public async Task<bool> DeleteRecipient(Guid id)
         {
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))

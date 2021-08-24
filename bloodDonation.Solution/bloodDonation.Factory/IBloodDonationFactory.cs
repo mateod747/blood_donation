@@ -9,9 +9,9 @@ namespace bloodDonation.Factory
 {
     public interface IBloodDonationFactory
     {
-        Task<BloodDonationModel> GetBloodDonation(int id);
+        Task<BloodDonationModel> GetBloodDonation(Guid id);
         Task<bool> PostBloodDonation(BloodDonationModel model);
         Task<bool> EditBloodDonation(BloodDonationModel model);
-        Task<bool> DeleteBloodDonation(int id);
+        Task<bool> DeleteBloodDonation(Guid id);
     }
 }

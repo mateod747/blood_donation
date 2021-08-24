@@ -9,9 +9,9 @@ namespace bloodDonation.DAL
 {
     public interface IRecipientDAL
     {
-        Task<RecipientModel> GetRecipient(int id);
+        Task<RecipientModel> GetRecipient(Guid id);
         Task<bool> PostRecipient(RecipientModel model);
         Task<bool> EditRecipient(RecipientModel model);
-        Task<bool> DeleteRecipient(int id);
+        Task<bool> DeleteRecipient(Guid id);
     }
 }

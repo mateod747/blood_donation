@@ -9,9 +9,9 @@ namespace bloodDonation.DAL
 {
     public interface IBloodTransactionDAL
     {
-        Task<BloodTransactionModel> GetBloodTransaction(int id);
+        Task<BloodTransactionModel> GetBloodTransaction(Guid id);
         Task<bool> PostBloodTransaction(BloodTransactionModel model);
         Task<bool> EditBloodTransaction(BloodTransactionModel model);
-        Task<bool> DeleteBloodTransaction(int id);
+        Task<bool> DeleteBloodTransaction(Guid id);
     }
 }

@@ -17,13 +17,14 @@ namespace bloodDonation.Factory
             _bloodTransactionDAL = bloodTransactionDAL;
         }
 
-        public async Task<BloodTransactionModel> GetBloodTransaction(int id)
+        public async Task<BloodTransactionModel> GetBloodTransaction(Guid id)
         {
             return await _bloodTransactionDAL.GetBloodTransaction(id);
         }
 
         public async Task<bool> PostBloodTransaction(BloodTransactionModel model)
         {
+            model.TransactID = Guid.NewGuid();
             return await _bloodTransactionDAL.PostBloodTransaction(model);
         }
 
@@ -32,7 +33,7 @@ namespace bloodDonation.Factory
             return await _bloodTransactionDAL.EditBloodTransaction(model);
         }
 
-        public async Task<bool> DeleteBloodTransaction(int id)
+        public async Task<bool> DeleteBloodTransaction(Guid id)
         {
             return await _bloodTransactionDAL.DeleteBloodTransaction(id);
         }

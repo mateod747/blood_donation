@@ -12,7 +12,7 @@ namespace bloodDonation.DAL
     {
         private readonly string connectionString = @"Server=mdubinjak;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        public async Task<BloodTransactionModel> GetBloodTransaction(int id)
+        public async Task<BloodTransactionModel> GetBloodTransaction(Guid id)
         {
             var bloodTransaction = new BloodTransactionModel();
 
@@ -31,12 +31,16 @@ namespace bloodDonation.DAL
                 {
                     while (reader.Read())
                     {
-                        bloodTransaction.BloodID = reader.GetInt32(reader.GetOrdinal("bloodID"));
-                        bloodTransaction.TransactID = reader.GetInt32(reader.GetOrdinal("transactID"));
-                        bloodTransaction.RecipientID = reader.GetInt32(reader.GetOrdinal("recipientID"));
-                        bloodTransaction.EmpID = reader.GetInt32(reader.GetOrdinal("empID"));
+                        bloodTransaction.BloodID = Guid.Parse(reader["bloodID"].ToString());
+                        bloodTransaction.TransactID = Guid.Parse(reader["transactID"].ToString());
+                        bloodTransaction.RecipientID = Guid.Parse(reader["recipientID"].ToString());
+                        bloodTransaction.EmpID = Guid.Parse(reader["empID"].ToString());
                         bloodTransaction.Quantity = reader.GetInt32(reader.GetOrdinal("quantity"));
                         bloodTransaction.DateOut = DateTime.Parse(reader["dateOut"].ToString());
+                        bloodTransaction.Hemoglobin = reader.GetOrdinal("hemoglobin");
+                        bloodTransaction.BloodPressure = reader["bloodPressure"].ToString();
+                        bloodTransaction.Notes = reader["notes"].ToString();
+                        bloodTransaction.Success = Boolean.Parse(reader.GetOrdinal("success").ToString());
                     }
                 }
             }
@@ -51,8 +55,12 @@ namespace bloodDonation.DAL
                 string queryString = @"Insert into BloodTransaction values(@empID, 
                                                                 @dateOut,  
                                                                 @quantity,
+                                                                @hemoglobin,
+                                                                @bloodPressure,
+                                                                @notes,
                                                                 @recipientID,
-                                                                @bloodID);";
+                                                                @bloodID,
+                                                                @success);";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.AddWithValue("@empID", model.EmpID);
@@ -60,6 +68,11 @@ namespace bloodDonation.DAL
                 command.Parameters.AddWithValue("@quantity", model.Quantity);
                 command.Parameters.AddWithValue("@recipientID", model.RecipientID);
                 command.Parameters.AddWithValue("@bloodID", model.BloodID);
+                command.Parameters.AddWithValue("@hemoglobin", model.Hemoglobin);
+                command.Parameters.AddWithValue("@bloodPressure", model.BloodPressure);
+                command.Parameters.AddWithValue("@notes", model.Notes);
+                command.Parameters.AddWithValue("@success", model.Success);
+
 
                 connection.Open();
 
@@ -77,7 +90,11 @@ namespace bloodDonation.DAL
                                                         quantity = @quantity,  
                                                         dateOut = @dateOut,
                                                         recipientID = @recipientID,
-                                                        bloodID = @bloodID
+                                                        bloodID = @bloodID,
+                                                        hemoglobin = @hemoglobin,
+                                                        bloodPressure = @bloodPressure,
+                                                        notes = @notes,
+                                                        success = @success,
                                                         where transactID = @id;";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -87,6 +104,10 @@ namespace bloodDonation.DAL
                 command.Parameters.AddWithValue("@recipientID", model.RecipientID);
                 command.Parameters.AddWithValue("@bloodID", model.BloodID);
                 command.Parameters.AddWithValue("@id", model.TransactID);
+                command.Parameters.AddWithValue("@hemoglobin", model.Hemoglobin);
+                command.Parameters.AddWithValue("@bloodPressure", model.BloodPressure);
+                command.Parameters.AddWithValue("@notes", model.Notes);
+                command.Parameters.AddWithValue("@success", model.Success);
 
                 connection.Open();
 
@@ -95,7 +116,7 @@ namespace bloodDonation.DAL
             return success;
         }
 
-        public async Task<bool> DeleteBloodTransaction(int id)
+        public async Task<bool> DeleteBloodTransaction(Guid id)
         {
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))

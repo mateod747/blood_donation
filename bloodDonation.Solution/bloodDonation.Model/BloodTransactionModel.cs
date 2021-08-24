@@ -8,11 +8,15 @@ namespace bloodDonation.Model
 {
     public class BloodTransactionModel
     {
-        public int TransactID { get; set; }
-        public int BloodID { get; set; }
-        public int RecipientID { get; set; }
-        public int EmpID { get; set; }
+        public Guid TransactID { get; set; }
+        public Guid BloodID { get; set; }
+        public Guid RecipientID { get; set; }
+        public Guid EmpID { get; set; }
         public DateTime DateOut { get; set; }
         public int Quantity { get; set; }
+        public int Hemoglobin { get; set; }
+        public string BloodPressure { get; set; }
+        public string Notes { get; set; }
+        public bool Success { get; set; }
     }
 }

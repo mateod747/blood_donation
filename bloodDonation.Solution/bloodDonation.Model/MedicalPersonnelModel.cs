@@ -8,7 +8,7 @@ namespace bloodDonation.Model
 {
     public class MedicalPersonnelModel
     {
-        public int EmpID { get; set; }
+        public Guid EmpID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }

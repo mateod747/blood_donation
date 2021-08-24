@@ -23,7 +23,7 @@ namespace bloodDonation.Web.Controllers
 
         [EnableCors]
         [HttpGet]
-        public async Task<IActionResult> GetDonationList(int page, int pageSize, int id, [FromHeader] string token)
+        public async Task<IActionResult> GetDonationList(int page, int pageSize, Guid id, [FromHeader] string token)
         {
             try
             {

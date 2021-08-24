@@ -12,7 +12,7 @@ namespace bloodDonation.DAL
     {
         private readonly string connectionString = @"Server=mdubinjak;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        public async Task<BloodDonationModel> GetBloodDonation(int id)
+        public async Task<BloodDonationModel> GetBloodDonation(Guid id)
         {
             var bloodDonation = new BloodDonationModel();
 
@@ -31,9 +31,8 @@ namespace bloodDonation.DAL
                 {
                     while (reader.Read())
                     {
-                        bloodDonation.BloodID = reader.GetInt32(reader.GetOrdinal("bloodID"));
-                        bloodDonation.DonorID = reader.GetInt32(reader.GetOrdinal("donorID"));
-                        bloodDonation.Quantity = reader.GetInt32(reader.GetOrdinal("quantity"));
+                        bloodDonation.BloodID = Guid.Parse(reader["bloodID"].ToString());
+                        bloodDonation.DonorID = Guid.Parse(reader["donorID"].ToString());
                         bloodDonation.DateDonated = DateTime.Parse(reader["dateDonated"].ToString());
                     }
                 }
@@ -41,7 +40,7 @@ namespace bloodDonation.DAL
             return bloodDonation;
         }
 
-        public async Task<List<BloodDonationModel>> GetBloodDonationsAsync(int id)
+        public async Task<List<BloodDonationModel>> GetBloodDonationsAsync(Guid id)
         {
             var bloodDonations = new List<BloodDonationModel>();
 
@@ -63,9 +62,8 @@ namespace bloodDonation.DAL
                         bloodDonations.Add(
                             new BloodDonationModel()
                             {
-                                BloodID = reader.GetInt32(reader.GetOrdinal("bloodID")),
-                                DonorID = reader.GetInt32(reader.GetOrdinal("donorID")),
-                                Quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
+                                BloodID = Guid.Parse(reader["bloodID"].ToString()),
+                                DonorID = Guid.Parse(reader["donorID"].ToString()),
                                 DateDonated = DateTime.Parse(reader["dateDonated"].ToString())
                             }
                         );
@@ -80,13 +78,14 @@ namespace bloodDonation.DAL
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = @"Insert into BloodDonation values(@donorID, 
-                                                                @quantity,  
-                                                                @dateDonated);";
+                string queryString = @"Insert into BloodDonation values(@id, 
+                                                                        @donorID, 
+                                                                        @quantity,  
+                                                                        @dateDonated);";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@id", model.BloodID);
                 command.Parameters.AddWithValue("@donorID", model.DonorID);
-                command.Parameters.AddWithValue("@quantity", model.Quantity);
                 command.Parameters.AddWithValue("@dateDonated", model.DateDonated);
 
                 connection.Open();
@@ -108,7 +107,6 @@ namespace bloodDonation.DAL
 
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.AddWithValue("@dateDonated", model.DateDonated);
-                command.Parameters.AddWithValue("@quantity", model.Quantity);
                 command.Parameters.AddWithValue("@donorID", model.DonorID);
                 command.Parameters.AddWithValue("@id", model.BloodID);
 
@@ -119,7 +117,7 @@ namespace bloodDonation.DAL
             return success;
         }
 
-        public async Task<bool> DeleteBloodDonation(int id)
+        public async Task<bool> DeleteBloodDonation(Guid id)
         {
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))

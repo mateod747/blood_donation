@@ -41,7 +41,7 @@ namespace bloodDonation.Web.Controllers
         public class DonorDataDto
         {
             public string Token { get; set; }
-            public int DonorID { get; set; }
+            public Guid DonorID { get; set; }
         }
         #endregion
     }

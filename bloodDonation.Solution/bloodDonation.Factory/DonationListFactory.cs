@@ -23,7 +23,7 @@ namespace bloodDonation.Factory
             _medicalPersonnelDAL = medicalPersonnelDAL;
         }
 
-        public async Task<DonationListDto> GetDonationListAsync(int page, int pageSize, int id)
+        public async Task<DonationListDto> GetDonationListAsync(int page, int pageSize, Guid id)
         {
             var donations = new DonationListDto()
             {
@@ -42,11 +42,15 @@ namespace bloodDonation.Factory
                     new DonationDto()
                     {
                         DateDonated = x.DateDonated.ToString(),
-                        Quantity = x.Quantity,
+                        Quantity = bloodTransaction.Quantity,
+                        Hemoglobin = bloodTransaction.Hemoglobin,
+                        BloodPressure = bloodTransaction.BloodPressure,
+                        Notes = bloodTransaction.Notes,
+                        Success = bloodTransaction.Success,
                         DateOut = bloodTransaction.DateOut.ToString(),
                         PersonnelName = $"{personnel.FirstName} {personnel.LastName}",
                         PersonnelWorkPhone = personnel.Phone,
-                        RecipientName = $"{recipient.FirstName} {recipient.LastName}",
+                        RecipientName = $"{recipient.Name}",
                         RecipientBloodType = recipient.BloodType
                     }
                 );
@@ -56,6 +60,7 @@ namespace bloodDonation.Factory
             var skipCount = pageSize * (page - 1);
 
             donations.ListCount = listCount;
+            donations.SuccessCount = donations.Donations.Where(x => x.Success == true).ToList().Count;
             donations.Donations = donations.Donations.OrderByDescending(x => x.DateDonated).ToList();
             donations.Donations = donations.Donations.Skip(skipCount).Take(pageSize).ToList();
             return donations;
@@ -66,6 +71,7 @@ namespace bloodDonation.Factory
         public class DonationListDto
         {
             public int ListCount { get; set; }
+            public int SuccessCount { get; set; }
             public List<DonationDto> Donations { get; set; }
         }
 
@@ -74,6 +80,10 @@ namespace bloodDonation.Factory
             // donator part
             public string DateDonated { get; set; }
             public int Quantity { get; set; }
+            public int Hemoglobin { get; set; }
+            public string BloodPressure { get; set; }
+            public string Notes { get; set; }
+            public bool Success { get; set; }
 
             // medical personnel
             public string PersonnelName { get; set; }

@@ -28,7 +28,7 @@ namespace bloodDonation.Common
                    Convert.ToBase64String(hash);
         }
 
-        public async Task<(string, int)> ValidatePassword(string username, string password)
+        public async Task<(string, Guid)> ValidatePassword(string username, string password)
         {
             var donors = new List<LoginData>();
             var connectionString = @"Server=mdubinjak;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
@@ -54,9 +54,9 @@ namespace bloodDonation.Common
                                 donors.Add(
                                     new LoginData()
                                     {
-                                        donorID = Int32.Parse(reader["donorID"].ToString()),
-                                        username = reader["username"].ToString(),
-                                        passwordHash = reader["passwordHash"].ToString()
+                                        DonorID = Guid.Parse(reader["donorID"].ToString()),
+                                        Username = reader["username"].ToString(),
+                                        PasswordHash = reader["passwordHash"].ToString()
                                     });
                             }
                         }
@@ -71,7 +71,7 @@ namespace bloodDonation.Common
             
             foreach(var donor in donors)
             {
-                var split = donor.passwordHash.Split(delimiter);
+                var split = donor.PasswordHash.Split(delimiter);
                 var iterations = Int32.Parse(split[IterationIndex]);
                 var salt = Convert.FromBase64String(split[SaltIndex]);
                 var hash = Convert.FromBase64String(split[Pbkdf2Index]);
@@ -80,10 +80,10 @@ namespace bloodDonation.Common
 
                 if (SlowEquals(hash, testHash))
                 {                    
-                    return (JWTAuth.GenerateToken("User"), donor.donorID);
+                    return (JWTAuth.GenerateToken("User"), donor.DonorID);
                 }
             }
-            return ("", 0);
+            return ("", Guid.Empty);
         }
 
         private static bool SlowEquals(byte[] a, byte[] b)
