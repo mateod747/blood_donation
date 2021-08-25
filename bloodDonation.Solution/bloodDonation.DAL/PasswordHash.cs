@@ -28,7 +28,7 @@ namespace bloodDonation.Common
                    Convert.ToBase64String(hash);
         }
 
-        public async Task<(string, Guid)> ValidatePassword(string username, string password)
+        public async Task<(string, Guid, bool)> ValidatePassword(string username, string password)
         {
             var donors = new List<LoginData>();
             var connectionString = @"Server=mdubinjak;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
@@ -56,7 +56,8 @@ namespace bloodDonation.Common
                                     {
                                         DonorID = Guid.Parse(reader["donorID"].ToString()),
                                         Username = reader["username"].ToString(),
-                                        PasswordHash = reader["passwordHash"].ToString()
+                                        PasswordHash = reader["passwordHash"].ToString(),
+                                        Admin = (bool)reader["admin"]
                                     });
                             }
                         }
@@ -80,10 +81,10 @@ namespace bloodDonation.Common
 
                 if (SlowEquals(hash, testHash))
                 {                    
-                    return (JWTAuth.GenerateToken("User"), donor.DonorID);
+                    return (JWTAuth.GenerateToken("User"), donor.DonorID, donor.Admin);
                 }
             }
-            return ("", Guid.Empty);
+            return ("", Guid.Empty, false);
         }
 
         private static bool SlowEquals(byte[] a, byte[] b)

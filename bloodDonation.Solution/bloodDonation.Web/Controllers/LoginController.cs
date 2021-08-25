@@ -27,6 +27,7 @@ namespace bloodDonation.Web.Controllers
                 var validationData = await hash.ValidatePassword(username, password);
                 donorData.Token = validationData.Item1;
                 donorData.DonorID = validationData.Item2;
+                donorData.Admin = validationData.Item3;
             }
             catch (Exception ex)
             {
@@ -42,6 +43,7 @@ namespace bloodDonation.Web.Controllers
         {
             public string Token { get; set; }
             public Guid DonorID { get; set; }
+            public bool Admin { get; set; }
         }
         #endregion
     }

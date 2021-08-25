@@ -65,7 +65,7 @@ namespace bloodDonation.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostDonor(DonorModelDto modelDto)
+        public async Task<IActionResult> PostDonor(string username, string password, [FromBody]DonorModelDto modelDto)
         {
             try
             {
