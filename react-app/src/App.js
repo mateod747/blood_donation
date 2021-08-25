@@ -6,14 +6,23 @@ import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import { Redirect } from 'react-router-dom';
 import DonationList from './components/DonationList';
+import AdminPage from './components/AdminPage';
 
 function App() {
   const [token, setToken] = React.useState(
     sessionStorage.getItem('loginToken') || ''
   );
 
+  const [admin, setAdmin] = React.useState(
+    sessionStorage.getItem('admin') || ''
+  );
+
   if (token.length < 1) {
     return <Login setToken={setToken} />
+  }
+  
+  if(admin === "true") {
+    return <AdminPage />
   }
 
   return (

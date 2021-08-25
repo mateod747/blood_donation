@@ -1,0 +1,142 @@
+.admin {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    z-index: -1;
+}
+
+.admin-body {
+    position: absolute;
+    width: 100%;
+    min-height: 100vh;
+    background-image: url("../public/body.jpg");
+    background-size: cover;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.cards {
+    opacity: 0.85;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    font-family: 'Poppins', sans-serif;
+    z-index: 3;
+}
+
+.admin-card {
+    flex: 1;
+    max-width: 50%;
+    margin-left: 1%;
+    margin-right: 1%;
+    height: 80vh;
+}
+
+.admin-header {
+    background-color: #222222;
+    color: rgb(247, 229, 195);
+}
+
+.admin-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: rgb(54, 54, 54);
+    color: white;
+    overflow-y: scroll;
+}
+
+#validationCustom05 {
+    flex: 1;
+}
+
+#gender {
+    flex: 1;
+}
+
+#validationCustom06 {
+    flex: 1;
+}
+
+.username-drop {
+    flex: 1;
+}
+
+.input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu), .input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n+3) {
+    margin: 8px 0;
+}
+
+#button-addon2 {
+    margin: 8px 0;
+}
+
+.admin-card-body::-webkit-scrollbar {
+    display: none;
+}
+
+.gender-select {
+    margin-top: 8px;
+}
+
+.tab-css {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.mb-3 {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+// Override bootstrap css klasa
+
+.nav-tabs .nav-link {
+    border: 1px solid white;
+    border-radius: 0;
+}
+
+.nav-tabs {
+    border: none;
+}
+
+.button {
+    border-radius: 0;
+}
+
+.nav-link {
+    color: #009836;
+}
+
+.nav-link:hover {
+    color: #00551e;
+}
+
+.form-column {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 5%;
+    width: 100%;
+}
+
+.form-css {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+}
+
+.input-css {
+    margin-right: 2%;
+    flex: 1;
+    text-align: left;
+}

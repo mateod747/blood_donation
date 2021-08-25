@@ -14,6 +14,7 @@ async function LoginUser(credentials) {
         .then(donorData => {
             sessionStorage.setItem('loginToken', donorData.Token !== 'null' ? donorData.Token : '');
             sessionStorage.setItem('donorID', donorData.DonorID);
+            sessionStorage.setItem('admin', donorData.Admin);
         }
         )
 }
@@ -28,8 +29,11 @@ export default function Login() {
             username,
             password
         })
-        if (sessionStorage.getItem('loginToken').length > 0) {
+        if (sessionStorage.getItem('loginToken').length > 0 && sessionStorage.getItem('admin') === "false") {
             window.location.href = 'http://localhost:3000/dashboard';
+        }
+        if (sessionStorage.getItem('loginToken').length > 0 && sessionStorage.getItem('admin') === "true") {
+            window.location.href = 'http://localhost:3000/adminpage';
         }
     }
     return (
