@@ -22,6 +22,8 @@ class AdminPage extends Component {
             error: false,
             username: "",
             password: "",
+
+            // For post method (save)
             firstName: "",
             lastName: "",
             address: "",
@@ -30,10 +32,52 @@ class AdminPage extends Component {
             bloodType: "0-",
             gender: "Male",
             age: 0,
+
+            // For put method (edit)
+            showStatusEdit: false,
+            errorEdit: false,
+            usernameEdit: "",
+            firstNameEdit: "",
+            lastNameEdit: "",
+            addressEdit: "",
+            emailEdit: "",
+            phoneEdit: "",
+            bloodTypeEdit: "0-",
+            genderEdit: "Male",
+            ageEdit: 0,
+            donorId: ""
         };
     }
 
-    componentDidMount() {
+    async getDonorData(event) {
+        await fetch(`https://localhost:44336/api/donor?username=${this.state.usernameEdit}`,
+            {
+                method: 'GET',
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "token": sessionStorage.getItem('loginToken')
+                }
+            })
+            .then(async res => await res.json())
+            .then(json => {
+                this.setState({
+                    firstNameEdit: json.firstName,
+                    lastNameEdit: json.lastName,
+                    addressEdit: json.address,
+                    emailEdit: json.email,
+                    phoneEdit: json.phone,
+                    bloodTypeEdit: json.bloodType,
+                    genderEdit: json.gender,
+                    ageEdit: json.age,
+                    donorId: json.donorID
+                });
+            })
+            .catch((message) => {
+                this.setState({
+                    showStatus: true,
+                    errorEdit: true
+                })
+            });
     }
 
     async postDonor() {
@@ -83,6 +127,91 @@ class AdminPage extends Component {
                         error: true
                     });
                 })
+        }
+    }
+
+    async editDonor() {
+        if (this.state.firstNameEdit !== "" &&
+            this.state.lastNameEdit !== "" &&
+            this.state.addressEdit !== "" &&
+            this.state.emailEdit !== "" &&
+            this.state.phoneEdit !== "" &&
+            this.state.bloodTypeEdit !== "" &&
+            this.state.ageEdit !== null) {
+
+            let donorId = this.state.donorId;
+
+            let donor = {
+                DonorID: this.state.donorId,
+                FirstName: this.state.firstNameEdit,
+                LastName: this.state.lastNameEdit,
+                Address: this.state.addressEdit,
+                Email: this.state.emailEdit,
+                Phone: this.state.phoneEdit,
+                BloodType: this.state.bloodTypeEdit,
+                Gender: this.state.genderEdit,
+                Age: this.state.ageEdit
+            };
+
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Access-Control-Allow-Origin": "*",
+                    "token": sessionStorage.getItem('loginToken')
+                },
+                body: JSON.stringify(donor)
+            };
+
+            const response = await fetch(`https://localhost:44336/api/donor`, requestOptions)
+                .then(async res => res.json())
+                .then(json => {
+                    this.setState({
+                        showStatusEdit: true,
+                        errorEdit: false
+                    });
+                })
+                .catch((message) => {
+                    this.setState({
+                        showStatusEdit: true,
+                        errorEdit: true
+                    });
+                })
+        }
+    }
+
+    async deleteDonor() {
+        await this.editDonor();
+        if(this.state.donorId !== "") 
+        {
+            const requestOptions = {
+                method: 'DELETE',
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "token": sessionStorage.getItem('loginToken')
+                }
+            };
+
+            const response = await fetch(`https://localhost:44336/api/donor/${this.state.donorId}`, requestOptions)
+                .then(async res => res.json())
+                .then(json => {
+                    this.setState({
+                        showStatusEdit: true,
+                        errorEdit: false
+                    });
+                })
+                .catch((message) => {
+                    this.setState({
+                        showStatusEdit: true,
+                        errorEdit: true
+                    });
+                })
+        }
+        else {
+            this.setState({
+                showStatusEdit: true,
+                errorEdit: true
+            });
         }
     }
 
@@ -249,28 +378,151 @@ class AdminPage extends Component {
                         </Tab>
                         <Tab eventKey="edit" title="Uredi">
                             <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit} className="form-css">
-                                <div className="form-column">
-                                    <InputGroup className="input-css username-drop">
-                                        <DropdownButton
-                                            variant="outline-secondary"
-                                            title="Dropdown"
-                                            id="input-group-dropdown-2"
-                                            align="end"
-                                        >
-                                            <Dropdown.Item href="#">Action</Dropdown.Item>
-                                            <Dropdown.Item href="#">Another action</Dropdown.Item>
-                                            <Dropdown.Item href="#">Something else here</Dropdown.Item>
-                                            <Dropdown.Divider />
-                                            <Dropdown.Item href="#">Separated link</Dropdown.Item>
-                                        </DropdownButton>
-                                        <FormControl aria-label="Text input with dropdown button" />
-                                        <Button variant="outline-secondary" id="button-addon2">
-                                            🗘
-                                        </Button>
-                                    </InputGroup>
-
+                                <div className="form-colum">
+                                    <Form.Group className="input-css" controlId="validationCustom03345">
+                                        <InputGroup className="username-drop">
+                                            <FormControl
+                                                type="text"
+                                                placeholder="Korisničko ime"
+                                                onChange={(event) => this.setState({
+                                                    usernameEdit: event.target.value
+                                                })}
+                                            />
+                                            <Button variant="outline-secondary" onClick={() => this.getDonorData()} id="button-addon2">
+                                                🗘
+                                            </Button>
+                                            <Button variant="outline-secondary" onClick={() => this.deleteDonor()} id="button-addon2">
+                                                ❌
+                                            </Button>
+                                        </InputGroup>
+                                    </Form.Group>
                                 </div>
-                                <Button variant="dark" type="submit">Dodaj</Button>
+                                <div className="form-column">
+                                    <Form.Group className="input-css" controlId="validationCustom03">
+                                        <Form.Label>Ime</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="Ime"
+                                            onChange={(event) => this.setState({
+                                                firstNameEdit: event.target.value
+                                            })}
+                                            value={this.state.firstNameEdit}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group className="input-css" controlId="validationCustom04">
+                                        <Form.Label>Prezime</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="Prezime"
+                                            onChange={(event) => this.setState({
+                                                lastNameEdit: event.target.value
+                                            })}
+                                            value={this.state.lastNameEdit}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                </div>
+                                <div className="form-column">
+                                    <Form.Group className="input-css" controlId="validationCustom05">
+                                        <Form.Label>Dob</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="number"
+                                            placeholder="Dob"
+                                            onChange={(event) => this.setState({
+                                                ageEdit: Number(event.target.value)
+                                            })}
+                                            value={this.state.ageEdit}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group className="input-css" controlId="gender">
+                                        <Form.Label>Spol</Form.Label>
+                                        <Form.Select onChange={(event) => this.setState({
+                                            genderEdit: event.target.value
+                                        })}
+                                            value={this.state.genderEdit}
+                                            className="gender-select">
+                                            <option value={"Male"}>M</option>
+                                            <option value={"Female"}>Ž</option>
+                                            <option value={"Other"}>Drugo</option>
+                                        </Form.Select>
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group className="input-css" controlId="gender">
+                                        <Form.Label>Krvna grupa</Form.Label>
+                                        <Form.Select onChange={(event) => this.setState({
+                                            bloodTypeEdit: event.target.value
+                                        })}
+                                            value={this.state.bloodTypeEdit}
+                                            className="gender-select">
+                                            <option value={"0-"}>0-</option>
+                                            <option value="0+">0+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="A+">A+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="AB+">AB+</option>
+                                        </Form.Select>
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                </div>
+                                <div className="form-column">
+                                    <Form.Group className="input-css" controlId="validationCustom06">
+                                        <Form.Label>Adresa stanovanja</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="Adresa"
+                                            onChange={(event) => this.setState({
+                                                addressEdit: event.target.value
+                                            })}
+                                            value={this.state.addressEdit}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                </div>
+                                <div className="form-column">
+                                    <Form.Group className="input-css" controlId="validationCustom07">
+                                        <Form.Label>E-mail</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="E-mail"
+                                            onChange={(event) => this.setState({
+                                                emailEdit: event.target.value
+                                            })}
+                                            value={this.state.emailEdit}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group className="input-css" controlId="validationCustom08">
+                                        <Form.Label>Broj mobitela</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="Mob"
+                                            onChange={(event) => this.setState({
+                                                phoneEdit: event.target.value
+                                            })}
+                                            value={this.state.phoneEdit}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                </div>
+                                {this.state.showStatusEdit ? this.state.errorEdit === true ?
+                                    <Alert variant="danger" onClose={() => this.setState({ showStatusEdit: false })} dismissible>
+                                        <Alert.Heading>Pogrješka ili krivo korisničko ime!</Alert.Heading>
+                                    </Alert> :
+                                    <Alert variant="success" onClose={() => this.setState({ showStatusEdit: false })} dismissible>
+                                        <Alert.Heading>Uspjeh!</Alert.Heading>
+                                    </Alert> : null
+                                }
+                                <Button variant="dark" onClick={() => this.editDonor()}>Uredi</Button>
                             </Form>
                         </Tab>
                     </Tabs>

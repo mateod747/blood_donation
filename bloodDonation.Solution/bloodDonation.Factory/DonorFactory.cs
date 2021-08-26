@@ -58,6 +58,13 @@ namespace bloodDonation.Factory
             return (donor, stock);
         }
 
+        public async Task<DonorModel> GetDonorByUsername(string username)
+        {
+            var donorId = await _donorDal.GetDonorIdByUsername(username);
+            var donor = await _donorDal.GetDonor(donorId);
+            return donor;
+        }
+
         public async Task<bool> PostDonor(string username, string password, DonorModel model, bool admin)
         {
             model.DonorID = Guid.NewGuid();
@@ -79,7 +86,8 @@ namespace bloodDonation.Factory
 
         public async Task<bool> DeleteDonor(Guid id)
         {
-            var success = await _donorDal.DeleteDonor(id);
+            _ = await _donorDal.DeleteDonorLogin(id);
+            bool success = await _donorDal.DeleteDonor(id);
             return success;
         }
     }

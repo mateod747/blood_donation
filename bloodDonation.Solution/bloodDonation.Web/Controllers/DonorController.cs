@@ -64,6 +64,47 @@ namespace bloodDonation.Web.Controllers
             }
         }
 
+        [EnableCors]
+        [HttpGet]
+        public async Task<IActionResult> GetDonorByUsername(string username, [FromHeader] string token)
+        {
+            try
+            {
+                var validationResult = JWTAuth.ValidateCurrentToken(token);
+
+                var claim = String.Empty;
+                var modelDto = new DonorModelDto();
+
+                if (!validationResult) return Ok(modelDto);
+
+                claim = JWTAuth.GetClaim(token, "UserRole");
+
+                if (claim.Equals("Admin"))
+                {
+                    var model = await _donorFactory.GetDonorByUsername(username);
+
+                    modelDto = new DonorModelDto()
+                    {
+                        DonorID = model.DonorID,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Address = model.Address,
+                        Email = model.Email,
+                        Phone = model.Phone,
+                        BloodType = model.BloodType,
+                        Gender = model.Gender.ToString(),
+                        Age = model.Age
+                    };
+                }
+
+                return Ok(modelDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostDonor(string username, string password, [FromBody]DonorModelDto modelDto, [FromHeader] string token)
         {

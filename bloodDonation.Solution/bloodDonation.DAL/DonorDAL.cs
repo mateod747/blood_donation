@@ -46,6 +46,33 @@ namespace bloodDonation.DAL
             return donor;
         }
 
+        public async Task<Guid> GetDonorIdByUsername(string username)
+        {
+            var donorId = Guid.Empty;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string queryString = "Select donorID from LoginData where username = @username;";
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@username", username);
+
+                connection.Open();
+
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        donorId = Guid.Parse(reader["donorID"].ToString());
+                    }
+                }
+            }
+            return donorId;
+        }
+
+
+
         public async Task<bool> PostDonor(DonorModel model)
         {
             var success = false;
@@ -118,6 +145,23 @@ namespace bloodDonation.DAL
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string queryString = @"Delete from Donor where donorID = @id;";
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@id", id);
+
+                connection.Open();
+
+                if ((await command.ExecuteNonQueryAsync()) > 0) success = true;
+            }
+            return success;
+        }
+
+        public async Task<bool> DeleteDonorLogin(Guid id)
+        {
+            var success = false;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string queryString = @"Delete from LoginData where donorID = @id;";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.AddWithValue("@id", id);
