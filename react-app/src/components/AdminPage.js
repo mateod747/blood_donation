@@ -12,64 +12,78 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import FormControl from 'react-bootstrap/FormControl';
+import Alert from 'react-bootstrap/Alert';
 
 class AdminPage extends Component {
     constructor(props) {
         super(props);
-        this.username = React.createRef();
-        this.password = React.createRef();
-        this.firstName = React.createRef();
-        this.lastName = React.createRef();
-        this.address = React.createRef();
-        this.email = React.createRef();
-        this.phone = React.createRef();
-        this.bloodType = React.createRef();
-        this.gender = React.createRef();
-        this.age = React.createRef();
-
         this.state = {
-            validated: false,
+            showStatus: false,
+            error: false,
+            username: "",
+            password: "",
+            firstName: "",
+            lastName: "",
+            address: "",
+            email: "",
+            phone: "",
+            bloodType: "0-",
+            gender: "Male",
+            age: 0,
         };
     }
-
-    handleSubmit = (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        this.setState({
-            validated: true
-        });
-    };
 
     componentDidMount() {
     }
 
     async postDonor() {
-        let username = this.username.current.value;
-        let password = this.password.current.value;
-    
-        let donor = {
-            FirstName: this.firstName.current.value,
-            LastName: this.lastName.current.value,
-            Address: this.address.current.value,
-            Email: this.email.current.value,
-            Phone: this.phone.current.value,
-            BloodType: this.bloodType.current.value,
-            Gender: this.gender.current.value,
-            Age: this.age.current.value
-        };
-    
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(donor)
-        };
-    
-        const response = await fetch(`https://localhost:44336/api/donor/username=${username}&password=${password}`, requestOptions);
-        const data = await response.json();
+        if (this.state.firstName !== "" &&
+            this.state.lastName !== "" &&
+            this.state.address !== "" &&
+            this.state.email !== "" &&
+            this.state.phone !== "" &&
+            this.state.bloodType !== "" &&
+            this.state.age !== null) {
+
+            let username = this.state.username;
+            let password = this.state.password;
+
+            let donor = {
+                FirstName: this.state.firstName,
+                LastName: this.state.lastName,
+                Address: this.state.address,
+                Email: this.state.email,
+                Phone: this.state.phone,
+                BloodType: this.state.bloodType,
+                Gender: this.state.gender,
+                Age: this.state.age
+            };
+
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Access-Control-Allow-Origin": "*",
+                    "token": sessionStorage.getItem('loginToken')
+                },
+                body: JSON.stringify(donor)
+            };
+
+            const response = await fetch(`https://localhost:44336/api/donor?username=${username}&password=${password}`, requestOptions)
+                .then(async res => res.json())
+                .then(json => {
+                    this.setState({
+                        showStatus: true,
+                        error: false
+                    });
+                })
+                .catch((message) => {
+                    this.setState({
+                        showStatus: true,
+                        error: true
+                    });
+                })
+        }
     }
 
     cards = () => {
@@ -86,7 +100,7 @@ class AdminPage extends Component {
                         defaultActiveKey="add"
                     >
                         <Tab eventKey="add" title="Dodaj" className="tab-css">
-                            <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit} className="form-css">
+                            <Form noValidate className="form-css">
                                 <div className="form-column">
                                     <Form.Group className="input-css" controlId="validationCustom01">
                                         <Form.Label>Korisničko ime</Form.Label>
@@ -94,7 +108,9 @@ class AdminPage extends Component {
                                             required
                                             type="text"
                                             placeholder="Korisničko ime"
-                                            ref={this.username}
+                                            onChange={(event) => this.setState({
+                                                username: event.target.value
+                                            })}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
@@ -104,7 +120,9 @@ class AdminPage extends Component {
                                             required
                                             type="password"
                                             placeholder="Lozinka"
-                                            ref={this.password}
+                                            onChange={(event) => this.setState({
+                                                password: event.target.value
+                                            })}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
@@ -116,7 +134,9 @@ class AdminPage extends Component {
                                             required
                                             type="text"
                                             placeholder="Ime"
-                                            ref={this.firstName}
+                                            onChange={(event) => this.setState({
+                                                firstName: event.target.value
+                                            })}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
@@ -126,7 +146,9 @@ class AdminPage extends Component {
                                             required
                                             type="text"
                                             placeholder="Prezime"
-                                            ref={this.lastName}
+                                            onChange={(event) => this.setState({
+                                                lastName: event.target.value
+                                            })}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
@@ -138,23 +160,31 @@ class AdminPage extends Component {
                                             required
                                             type="number"
                                             placeholder="Dob"
-                                            ref={this.age}
+                                            onChange={(event) => this.setState({
+                                                age: Number(event.target.value)
+                                            })}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group className="input-css" controlId="gender">
                                         <Form.Label>Spol</Form.Label>
-                                        <Form.Select ref={this.gender} className="gender-select">
-                                            <option value="0">M</option>
-                                            <option value="1">Ž</option>
-                                            <option value="2">Drugo</option>
+                                        <Form.Select onChange={(event) => this.setState({
+                                            gender: event.target.value
+                                        })}
+                                            className="gender-select">
+                                            <option value={"Male"}>M</option>
+                                            <option value={"Female"}>Ž</option>
+                                            <option value={"Other"}>Drugo</option>
                                         </Form.Select>
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group className="input-css" controlId="gender">
                                         <Form.Label>Krvna grupa</Form.Label>
-                                        <Form.Select ref={this.bloodType} className="gender-select">
-                                            <option value="0-">0-</option>
+                                        <Form.Select onChange={(event) => this.setState({
+                                            bloodType: event.target.value
+                                        })}
+                                            className="gender-select">
+                                            <option value={"0-"}>0-</option>
                                             <option value="0+">0+</option>
                                             <option value="A-">A-</option>
                                             <option value="A+">A+</option>
@@ -173,7 +203,9 @@ class AdminPage extends Component {
                                             required
                                             type="text"
                                             placeholder="Adresa"
-                                            ref={this.address}
+                                            onChange={(event) => this.setState({
+                                                address: event.target.value
+                                            })}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
@@ -185,7 +217,9 @@ class AdminPage extends Component {
                                             required
                                             type="text"
                                             placeholder="E-mail"
-                                            ref={this.email}
+                                            onChange={(event) => this.setState({
+                                                email: event.target.value
+                                            })}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
@@ -195,12 +229,22 @@ class AdminPage extends Component {
                                             required
                                             type="text"
                                             placeholder="Mob"
-                                            ref={this.phone}
+                                            onChange={(event) => this.setState({
+                                                phone: event.target.value
+                                            })}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
                                 </div>
-                                <Button variant="dark" onClick={this.postDonor()}>Dodaj</Button>
+                                {this.state.showStatus ? this.state.error === true ?
+                                    <Alert variant="danger" onClose={() => this.setState({ showStatus: false })} dismissible>
+                                        <Alert.Heading>Pogrješka!</Alert.Heading>
+                                    </Alert> :
+                                    <Alert variant="success" onClose={() => this.setState({ showStatus: false })} dismissible>
+                                        <Alert.Heading>Uspjeh!</Alert.Heading>
+                                    </Alert> : null
+                                }
+                                <Button variant="dark" onClick={() => this.postDonor()}>Dodaj</Button>
                             </Form>
                         </Tab>
                         <Tab eventKey="edit" title="Uredi">

@@ -50,7 +50,7 @@ namespace bloodDonation.Web.Controllers
                         Email = model.Item1.Email,
                         Phone = model.Item1.Phone,
                         BloodType = model.Item1.BloodType,
-                        Gender = model.Item1.Gender,
+                        Gender = model.Item1.Gender.ToString(),
                         BloodStock = model.Item2,
                         Age = model.Item1.Age
                     };
@@ -65,24 +65,38 @@ namespace bloodDonation.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostDonor(string username, string password, [FromBody]DonorModelDto modelDto)
+        public async Task<IActionResult> PostDonor(string username, string password, [FromBody]DonorModelDto modelDto, [FromHeader] string token)
         {
+            var validationResult = JWTAuth.ValidateCurrentToken(token);
+
+            var claim = String.Empty;
+
+            if (!validationResult) return Ok(false);
+
+            claim = JWTAuth.GetClaim(token, "UserRole");
+
+            Enum.TryParse(modelDto.Gender, out Gender gender);
+            var success = false;
+
             try
             {
-                var model = new DonorModel()
+                if(claim.Equals("Admin"))
                 {
-                    DonorID = modelDto.DonorID,
-                    FirstName = modelDto.FirstName,
-                    LastName = modelDto.LastName,
-                    Address = modelDto.Address,
-                    Email = modelDto.Email,
-                    Phone = modelDto.Phone,
-                    BloodType = modelDto.BloodType,
-                    Gender = modelDto.Gender,
-                    Age = modelDto.Age
-                };
+                    var model = new DonorModel()
+                    {
+                        DonorID = modelDto.DonorID,
+                        FirstName = modelDto.FirstName,
+                        LastName = modelDto.LastName,
+                        Address = modelDto.Address,
+                        Email = modelDto.Email,
+                        Phone = modelDto.Phone,
+                        BloodType = modelDto.BloodType,
+                        Gender = gender,
+                        Age = modelDto.Age
+                    };
 
-                var success = await _donorFactory.PostDonor(model);
+                    success = await _donorFactory.PostDonor(username, password, model, false);
+                }
 
                 return Ok(success);
             }
@@ -95,6 +109,8 @@ namespace bloodDonation.Web.Controllers
         [HttpPut]
         public async Task<IActionResult> EditDonor(DonorModelDto modelDto)
         {
+            Enum.TryParse(modelDto.Gender, out Gender gender);
+
             try
             {
                 var model = new DonorModel()
@@ -106,7 +122,7 @@ namespace bloodDonation.Web.Controllers
                     Email = modelDto.Email,
                     Phone = modelDto.Phone,
                     BloodType = modelDto.BloodType,
-                    Gender = modelDto.Gender,
+                    Gender = gender,
                     Age = modelDto.Age
                 };
 
@@ -147,7 +163,7 @@ namespace bloodDonation.Web.Controllers
         public string Email { get; set; }
         public string Phone { get; set; }
         public string BloodType { get; set; }
-        public Gender Gender { get; set; }
+        public string Gender { get; set; }
         public int BloodStock { get; set; }
     }
 

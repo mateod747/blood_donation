@@ -17,6 +17,8 @@ namespace bloodDonation.Factory
             builder.RegisterType<MedicalPersonnelFactory>().As<IMedicalPersonnelFactory>().InstancePerLifetimeScope();
             builder.RegisterType<RecipientFactory>().As<IRecipientFactory>().InstancePerLifetimeScope();
             builder.RegisterType<DonationListFactory>().As<IDonationListFactory>().InstancePerLifetimeScope();
+            builder.RegisterType<LoginFactory>().As<ILoginFactory>().InstancePerLifetimeScope();
+
             base.Load(builder);
         }
     }

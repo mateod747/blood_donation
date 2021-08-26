@@ -121,8 +121,10 @@
     <Compile Include="IBloodTransactionFactory.cs" />
     <Compile Include="IDonationListFactory.cs" />
     <Compile Include="IDonorFactory.cs" />
+    <Compile Include="ILoginFactory.cs" />
     <Compile Include="IMedicalPersonnelFactory.cs" />
     <Compile Include="IRecipientFactory.cs" />
+    <Compile Include="LoginFactory.cs" />
     <Compile Include="MedicalPersonnelFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecipientFactory.cs" />

@@ -122,6 +122,7 @@
     <Compile Include="IBloodTransactionDAL.cs" />
     <Compile Include="IDonorDAL.cs" />
     <Compile Include="IMedicalPersonnelDAL.cs" />
+    <Compile Include="IPasswordHash.cs" />
     <Compile Include="IRecipientDAL.cs" />
     <Compile Include="MedicalPersonnelDAL.cs" />
     <Compile Include="PasswordHash.cs" />
