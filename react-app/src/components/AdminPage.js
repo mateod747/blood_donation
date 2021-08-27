@@ -45,7 +45,20 @@ class AdminPage extends Component {
             bloodTypeEdit: "0-",
             genderEdit: "Male",
             ageEdit: 0,
-            donorId: ""
+            donorId: "",
+
+            // For Blood Transaction
+            showStatusTransaction: false,
+            transactionDonorId: "",
+            transactionMessage: "",
+            usernameTransaction: "",
+            personnelGuid: "",
+
+            //  For blood transaction editing
+            editTransactionCheck: false,
+            editDay: 0,
+            editMonth: 0,
+            editYear: 0
         };
     }
 
@@ -182,8 +195,7 @@ class AdminPage extends Component {
 
     async deleteDonor() {
         await this.editDonor();
-        if(this.state.donorId !== "") 
-        {
+        if (this.state.donorId !== "") {
             const requestOptions = {
                 method: 'DELETE',
                 headers: {
@@ -213,6 +225,39 @@ class AdminPage extends Component {
                 errorEdit: true
             });
         }
+    }
+
+    async doesDonorExist() {
+        let donor = {
+            Username: this.state.usernameTransaction,
+            PersonnelId: this.state.personnelGuid
+        };
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "*",
+                "token": sessionStorage.getItem('loginToken')
+            },
+            body: JSON.stringify(donor)
+        };
+
+        await fetch(`https://localhost:44336/api/bloodtransaction`, requestOptions)
+            .then(async res => await res.json())
+            .then(json => {
+                this.setState({
+                    showStatusTransaction: true,
+                    transactionDonorId: json.donorId,
+                    transactionMessage: json.message,
+                });
+            })
+            .catch((message) => {
+                this.setState({
+                    showStatusTransaction: true,
+                    transactionMessage: "Error"
+                })
+            });
     }
 
     cards = () => {
@@ -376,7 +421,7 @@ class AdminPage extends Component {
                                 <Button variant="dark" onClick={() => this.postDonor()}>Dodaj</Button>
                             </Form>
                         </Tab>
-                        <Tab eventKey="edit" title="Uredi">
+                        <Tab eventKey="edit" title="Uredi" className="tab-css">
                             <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit} className="form-css">
                                 <div className="form-colum">
                                     <Form.Group className="input-css" controlId="validationCustom03345">
@@ -533,12 +578,117 @@ class AdminPage extends Component {
             <Card className="admin-card" key="card2">
                 <Card.Header className="admin-header" bg="success"><h5>{cardHeaders[1]}</h5></Card.Header>
                 <Card.Body className="admin-card-body">
-                    <Card.Text>
-                        here goes the inputs
-                    </Card.Text>
-                    <Button variant="dark">
-                        Detalji
-                    </Button>
+                    <Tabs
+                        transition={false}
+                        id="tabs"
+                        className="mb-3"
+                        defaultActiveKey="don"
+                    >
+                        <Tab eventKey="don" title="Donacije" className="tab-css">
+                            <Form noValidate validated={this.state.validatedCard2} className="form-css" onSubmit={this.handleSubmit} >
+                                <div className="form-column">
+                                    <Form.Group className="input-css" controlId="validationCustom088">
+                                        <Form.Label>Medicinsko osoblje</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="Medicinsko osoblje"
+                                            onChange={(event) => this.setState({
+                                                personnelGuid: event.target.value
+                                            })}
+                                            disabled={!this.state.editTransactionCheck}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                </div>
+                                <div className="form-colum">
+                                    <Form.Group className="input-css">
+                                        <InputGroup className="username-drop">
+                                            <FormControl
+                                                type="text"
+                                                placeholder="DonorId"
+                                                onChange={(event) => this.setState({
+                                                    usernameTransaction: event.target.value
+                                                })}
+                                                disabled={!this.state.editTransactionCheck}
+                                            />
+                                            <Button disabled={!this.state.editTransactionCheck} variant="outline-secondary" onClick={() => this.doesDonorExist()} id="button-addon2">
+                                                {'->'}
+                                            </Button>
+                                        </InputGroup>
+                                    </Form.Group>
+                                    {this.state.showStatusTransaction ? this.state.transactionMessage != "" ?
+                                        <Alert variant="danger" onClose={() => this.setState({ showStatusTransaction: false })} dismissible>
+                                            <Alert.Heading>{this.state.transactionMessage}</Alert.Heading>
+                                        </Alert> :
+                                        <Alert variant="success" onClose={() => this.setState({ showStatusTransaction: false })} dismissible>
+                                            <Alert.Heading>Točni podaci</Alert.Heading>
+                                        </Alert> : null}
+                                </div>
+                                <div className="form-colum">
+                                    <Form.Group className="input-css" controlId="validationCustom0111">
+                                        <Form.Label>Dan</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="number"
+                                            placeholder="Dan"
+                                            onChange={(event) => this.setState({
+                                                editDay: Number(event.target.value)
+                                            })}
+                                            disabled={!this.state.editTransactionCheck}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group className="input-css" controlId="validationCustom01112">
+                                        <Form.Label>Mjesec</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="number"
+                                            placeholder="Mjesec"
+                                            onChange={(event) => this.setState({
+                                                editMonth: Number(event.target.value)
+                                            })}
+                                            disabled={!this.state.editTransactionCheck}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group className="input-css" controlId="validationCustom01113">
+                                        <Form.Label>Dan</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="number"
+                                            placeholder="Godina"
+                                            onChange={(event) => this.setState({
+                                                editYear: Number(event.target.value)
+                                            })}
+                                            disabled={!this.state.editTransactionCheck}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group className="input-css" controlId="formBasicCheckbox">
+                                        <Form.Check
+                                            type="checkbox"
+                                            label="Uredi?"
+                                            onChange={(event) => this.setState({
+                                                editTransactionCheck: event.target.checked
+                                            })} />
+                                    </Form.Group>
+                                </div>
+                            </Form>
+                        </Tab>
+                        <Tab eventKey="per" title="Osoblje">
+
+
+                        </Tab>
+                        <Tab eventKey="rec" title="Primatelji">
+
+
+                        </Tab>
+                        <Tab eventKey="stock" title="Zaliha krvi">
+
+
+                        </Tab>
+                    </Tabs>
                 </Card.Body>
             </Card>
         );

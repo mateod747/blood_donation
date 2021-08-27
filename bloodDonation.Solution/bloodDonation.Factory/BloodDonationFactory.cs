@@ -19,7 +19,7 @@ namespace bloodDonation.Factory
 
         public async Task<BloodDonationModel> GetBloodDonation(Guid id)
         {
-            return await _bloodDonationDAL.GetBloodDonation(id);
+            return await _bloodDonationDAL.GetBloodDonation(1, 1, 1);
         }
 
         public async Task<bool> PostBloodDonation(BloodDonationModel model)

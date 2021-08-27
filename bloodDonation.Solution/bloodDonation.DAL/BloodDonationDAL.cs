@@ -12,16 +12,21 @@ namespace bloodDonation.DAL
     {
         private readonly string connectionString = @"Server=mdubinjak;Database=blood_donation;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        public async Task<BloodDonationModel> GetBloodDonation(Guid id)
+        public async Task<BloodDonationModel> GetBloodDonation(int year, int month, int day)
         {
             var bloodDonation = new BloodDonationModel();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = "Select * from BloodDonation where bloodID = @id;";
+                string queryString = @"Select * from BloodDonation WHERE  (DATEPART(yy, dateDonated) = @year
+                                                                AND DATEPART(mm, dateDonated) = @month
+                                                                AND DATEPART(dd, dateDonated) = @day";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@year", year);
+                command.Parameters.AddWithValue("@month", month);
+                command.Parameters.AddWithValue("@day", day);
+
 
                 connection.Open();
 
