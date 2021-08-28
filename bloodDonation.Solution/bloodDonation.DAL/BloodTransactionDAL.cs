@@ -52,7 +52,8 @@ namespace bloodDonation.DAL
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = @"Insert into BloodTransaction values(@empID, 
+                string queryString = @"Insert into BloodTransaction values(@id,
+                                                                @empID, 
                                                                 @dateOut,  
                                                                 @quantity,
                                                                 @hemoglobin,
@@ -63,6 +64,7 @@ namespace bloodDonation.DAL
                                                                 @success);";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@id", model.TransactID);
                 command.Parameters.AddWithValue("@empID", model.EmpID);
                 command.Parameters.AddWithValue("@dateOut", model.DateOut);
                 command.Parameters.AddWithValue("@quantity", model.Quantity);

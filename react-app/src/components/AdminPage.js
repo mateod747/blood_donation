@@ -48,18 +48,35 @@ class AdminPage extends Component {
             donorId: "",
 
             // For Blood Transaction
-            showStatusTransaction: false,
-            transactionDonorId: "",
-            transactionMessage: "",
-            usernameTransaction: "",
-            personnelGuid: "",
-
-            //  For blood transaction editing
             editTransactionRadioAdd: true,
             editTransactionRadioEdit: false,
-            editDay: 0,
-            editMonth: 0,
-            editYear: 0
+
+            // Post new blood transaction
+            showStatusAddTransaction: false,
+            transactionAddError: false,
+
+            transAddUsername: "",
+            transAddMedical: "",
+            transAddDonorId: "",
+            transAddRecipient: "",
+            transAddQuantity: 0,
+            transAddHemoglobin: 0,
+            transAddBloodPressure: "",
+            transAddNotes: "",
+            transAddSuccess: true,
+
+            // Edit existing blood transaction
+            transEditUsername: "",
+            transEditDateInYear: 0,
+            transEditDateInMonth: 0,
+            transEditDateInDay: 0,
+            transEditDateOutYear: 0,
+            transEditDateOutMonth: 0,
+            transEditDateOutDay: 0,
+            transEditQuantity: 0,
+            transEditHemoglobin: 0,
+            transEditBloodPressure: "",
+            transEditNotes: "",
         };
     }
 
@@ -228,10 +245,14 @@ class AdminPage extends Component {
         }
     }
 
-    async doesDonorExist() {
-        let donor = {
-            Username: this.state.usernameTransaction,
-            PersonnelId: this.state.personnelGuid
+    async PostBloodTransaction() {
+        let bloodtransaction = {
+            EmpId: this.state.transAddMedical,
+            Quantity: this.state.transAddQuantity,
+            Hemoglobin: this.state.transAddHemoglobin,
+            BloodPressure: this.state.transAddBloodPressure,
+            Notes: this.state.transAddNotes,
+            Success: this.state.transAddSuccess
         };
 
         const requestOptions = {
@@ -241,22 +262,21 @@ class AdminPage extends Component {
                 "Access-Control-Allow-Origin": "*",
                 "token": sessionStorage.getItem('loginToken')
             },
-            body: JSON.stringify(donor)
+            body: JSON.stringify(bloodtransaction)
         };
 
-        await fetch(`https://localhost:44336/api/bloodtransaction`, requestOptions)
+        await fetch(`https://localhost:44336/api/bloodtransaction?username=${this.state.transAddUsername}`, requestOptions)
             .then(async res => await res.json())
             .then(json => {
                 this.setState({
-                    showStatusTransaction: true,
-                    transactionDonorId: json.donorId,
-                    transactionMessage: json.message,
+                    showStatusAddTransaction: true,
+                    transactionAddError: false,
                 });
             })
             .catch((message) => {
                 this.setState({
-                    showStatusTransaction: true,
-                    transactionMessage: "Error"
+                    showStatusAddTransaction: true,
+                    transactionAddError: true,
                 })
             });
     }
@@ -621,43 +641,6 @@ class AdminPage extends Component {
                                             checked={this.state.editTransactionRadioEdit} />
                                     </Form.Group>
                                 </div>
-                                <div className="form-column" hidden={this.state.editTransactionRadioEdit}>
-                                    <Form.Group className="input-css" controlId="validationCustom088">
-                                        <Form.Label>Medicinsko osoblje</Form.Label>
-                                        <Form.Control
-                                            required
-                                            type="text"
-                                            placeholder="Medicinsko osoblje"
-                                            onChange={(event) => this.setState({
-                                                personnelGuid: event.target.value
-                                            })}
-                                        />
-                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
-                                    </Form.Group>
-                                </div>
-                                <div className="form-colum" hidden={this.state.editTransactionRadioAdd === true && this.state.editTransactionRadioEdit === true}>
-                                    <Form.Group className="input-css">
-                                        <InputGroup className="username-drop">
-                                            <FormControl
-                                                type="text"
-                                                placeholder="Korisničko ime"
-                                                onChange={(event) => this.setState({
-                                                    usernameTransaction: event.target.value
-                                                })}
-                                            />
-                                            <Button variant="outline-secondary" onClick={() => this.doesDonorExist()} id="button-addon2">
-                                                {'->'}
-                                            </Button>
-                                        </InputGroup>
-                                    </Form.Group>
-                                    {this.state.showStatusTransaction ? this.state.transactionMessage != "" ?
-                                        <Alert variant="danger" onClose={() => this.setState({ showStatusTransaction: false })} dismissible>
-                                            <Alert.Heading>{this.state.transactionMessage}</Alert.Heading>
-                                        </Alert> :
-                                        <Alert variant="success" onClose={() => this.setState({ showStatusTransaction: false })} dismissible>
-                                            <Alert.Heading>Točni podaci</Alert.Heading>
-                                        </Alert> : null}
-                                </div>
                                 <div className="form-column" hidden={this.state.editTransactionRadioAdd}>
                                     <Form.Group className="input-css" controlId="validationCustom0111">
                                         <Form.Label>Dan</Form.Label>
@@ -697,8 +680,123 @@ class AdminPage extends Component {
                                     </Form.Group>
                                     <Button variant="dark" onClick="" className="button-edit">Pretraži</Button>
                                 </div>
+
+
+                                {/* ---------------- POST --------------- */}
+
+                                <div className="form-colum" hidden={this.state.editTransactionRadioEdit}>
+                                    <Form.Group className="input-css">
+                                        <Form.Label>Korisničko ime</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Korisničko ime"
+                                            onChange={(event) => this.setState({
+                                                transAddUsername: event.target.value
+                                            })}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                </div>
+                                <div className="form-column" hidden={this.state.editTransactionRadioEdit}>
+                                    <Form.Group className="input-css" controlId="validationCustom088">
+                                        <Form.Label>Medicinsko osoblje</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="Medicinsko osoblje"
+                                            onChange={(event) => this.setState({
+                                                transAddMedical: event.target.value
+                                            })}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                </div>
+                                <div className="form-column" hidden={this.state.editTransactionRadioEdit}>
+                                    <Form.Group className="input-css" controlId="validationCustom01111">
+                                        <Form.Label>Količina</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="number"
+                                            placeholder="Količina"
+                                            onChange={(event) => this.setState({
+                                                transAddQuantity: Number(event.target.value)
+                                            })}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group className="input-css" controlId="validationCustom0114312">
+                                        <Form.Label>Hemoglobin</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="number"
+                                            placeholder="Hemoglobin"
+                                            onChange={(event) => this.setState({
+                                                transAddHemoglobin: Number(event.target.value)
+                                            })}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group className="input-css" controlId="validationCustom01111">
+                                        <Form.Label>Krvni tlak</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="Krvni tlak"
+                                            onChange={(event) => this.setState({
+                                                transAddBloodPressure: event.target.value
+                                            })}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                </div>
+                                <div className="form-column" hidden={this.state.editTransactionRadioEdit}>
+                                    <Form.Group className="input-css" controlId="validationCustom01111">
+                                        <Form.Label>Komentar</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="Komentar"
+                                            onChange={(event) => this.setState({
+                                                transAddNotes: event.target.value
+                                            })}
+                                        />
+                                        <Form.Control.Feedback>U redu</Form.Control.Feedback>
+                                    </Form.Group>
+                                </div>
+                                <div className="form-column">
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Form.Check
+                                            isValid
+                                            type="checkbox"
+                                            label="Uspješna donacija"
+                                            onChange={(event) => {
+                                                if (event.target.checked) {
+                                                    this.setState({
+                                                        transAddSuccess: true,
+                                                    })
+                                                }
+                                                else {
+                                                    this.setState({
+                                                        transAddSuccess: false,
+                                                    })
+                                                }
+                                            }}
+                                            checked={this.state.transAddSuccess}
+                                        />
+                                    </Form.Group>
+                                </div>
+                                {this.state.showStatusAddTransaction ? this.state.transactionAddError === true ?
+                                    <Alert variant="danger" onClose={() => this.setState({ showStatusAddTransaction: false })} dismissible>
+                                        <Alert.Heading>Pogrješka!</Alert.Heading>
+                                    </Alert> :
+                                    <Alert variant="success" onClose={() => this.setState({ showStatusAddTransaction: false })} dismissible>
+                                        <Alert.Heading>Uspjeh!</Alert.Heading>
+                                    </Alert> : null
+                                }
+                                <Button variant="dark" onClick={() => this.PostBloodTransaction()}>Dodaj</Button>
                             </Form>
                         </Tab>
+
                         <Tab eventKey="per" title="Osoblje">
 
 

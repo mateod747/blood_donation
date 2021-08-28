@@ -24,7 +24,6 @@ namespace bloodDonation.Factory
 
         public async Task<bool> PostBloodDonation(BloodDonationModel model)
         {
-            model.BloodID = Guid.NewGuid();
             return await _bloodDonationDAL.PostBloodDonation(model);
         }
 

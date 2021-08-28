@@ -1,5 +1,6 @@
 ﻿using bloodDonation.Common;
 using bloodDonation.Factory;
+using bloodDonation.Model;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,21 +14,41 @@ namespace bloodDonation.Web.Controllers
     [ApiController]
     public class BloodTransactionController : ControllerBase
     {
+        public readonly IBloodDonationFactory _bloodDonationFactory;
         public readonly IBloodTransactionFactory _bloodTransactionFactory;
+        public readonly IDonorFactory _donorFactory;
 
-        public BloodTransactionController(IBloodTransactionFactory bloodTransactionFactory)
+        public BloodTransactionController(IBloodDonationFactory bloodDonationFactory, IBloodTransactionFactory bloodTransactionFactory, IDonorFactory donorFactory)
         {
+            _bloodDonationFactory = bloodDonationFactory;
             _bloodTransactionFactory = bloodTransactionFactory;
+            _donorFactory = donorFactory;
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetDonorIdAndCheckIfPersonnelExists([FromBody]DonorDataDto donorDataDto, [FromHeader] string token)
+        public async Task<IActionResult> PostBloodTransaction(string username, [FromBody] BloodTransactionModelDto bloodTransactionModelDto, [FromHeader] string token)
         {
-            var data = new DonorCheckDto()
+            var bloodDonation = new BloodDonationModel()
             {
-                DonorId = Guid.Empty,
-                Message = "Not validated"
+                DateDonated = DateTime.Now,
+                DonorID = Guid.Empty,
+                BloodID = Guid.NewGuid()
             };
+
+            var bloodTransaction = new BloodTransactionModel()
+            {
+                TransactID = Guid.NewGuid(),
+                BloodID = bloodDonation.BloodID,
+                BloodPressure = bloodTransactionModelDto.BloodPressure,
+                DateOut = DateTime.Now,
+                EmpID = bloodTransactionModelDto.EmpId,
+                RecipientID = new Guid("AA4DE667-8D99-461A-BBA1-73815EBB0EFE"),
+                Hemoglobin = bloodTransactionModelDto.Hemoglobin,
+                Notes = bloodTransactionModelDto.Notes,
+                Quantity = bloodTransactionModelDto.Quantity,
+                Success = bloodTransactionModelDto.Success
+            };
+
             var validationResult = JWTAuth.ValidateCurrentToken(token);
 
             var claim = String.Empty;
@@ -38,14 +59,26 @@ namespace bloodDonation.Web.Controllers
 
             try
             {
-                if(claim.Equals("Admin"))
+                if (claim.Equals("Admin"))
                 {
-                    var result = await _bloodTransactionFactory.GetDonorIdAndCheckIfPersonnelExists(donorDataDto.Username, donorDataDto.PersonnelId);
-                    data = new DonorCheckDto()
+                    var donor = await _donorFactory.GetDonorByUsername(username);
+
+                    if (donor == null || donor.DonorID == Guid.Empty) return Ok(false);
+
+                    bloodDonation.DonorID = donor.DonorID;
+
+                    var result = await _bloodDonationFactory.PostBloodDonation(bloodDonation);
+
+                    if (!result) return Ok(false);
+
+                    var resultTransaction = await _bloodTransactionFactory.PostBloodTransaction(bloodTransaction);
+
+                    if (!result) 
                     {
-                        DonorId = result.Item1,
-                        Message = result.Item2
+                        _ = await _bloodDonationFactory.DeleteBloodDonation(bloodDonation.BloodID);
+                        return Ok(false);
                     };
+
                 }
             }
             catch (Exception ex)
@@ -53,23 +86,35 @@ namespace bloodDonation.Web.Controllers
                 return BadRequest(ex.Message);
             }
 
-            return Ok(data);
+            return Ok(true);
         }
 
         #region Classes 
 
-        public class DonorDataDto
+        public class TransactionDataDto
         {
-            public Guid PersonnelId { get; set; }
             public string Username { get; set; }
+            public int Year { get; set; }
+            public int Month { get; set; }
+            public int Day { get; set; }
         }
 
-        public class DonorCheckDto
+        public class BloodTransactionModelDto
         {
             public Guid DonorId { get; set; }
-            public string Message { get; set; }
+            public Guid TransactId { get; set; }
+            public Guid BloodId { get; set; }
+            public Guid RecipientId { get; set; }
+            public Guid EmpId { get; set; }
+            public int DateOutYear { get; set; }
+            public int DateOutMonth { get; set; }
+            public int DateOutDay { get; set; }
+            public int Quantity { get; set; }
+            public int Hemoglobin { get; set; }
+            public string BloodPressure { get; set; }
+            public string Notes { get; set; }
+            public bool Success { get; set; }
         }
-
 
         #endregion
     }

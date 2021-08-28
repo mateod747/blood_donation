@@ -85,7 +85,6 @@ namespace bloodDonation.DAL
             {
                 string queryString = @"Insert into BloodDonation values(@id, 
                                                                         @donorID, 
-                                                                        @quantity,  
                                                                         @dateDonated);";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -106,7 +105,6 @@ namespace bloodDonation.DAL
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string queryString = @"Update BloodDonation set donorID = @donorID, 
-                                                        quantity = @quantity,  
                                                         dateDonated = @dateDonated
                                                         where bloodID = @id;";
 
