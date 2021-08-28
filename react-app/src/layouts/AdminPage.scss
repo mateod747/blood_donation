@@ -140,3 +140,21 @@
     flex: 1;
     text-align: left;
 }
+
+.form-check-label {
+    margin: 5px 5px 10px 5px;
+}
+
+.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
+    color: white
+}
+
+.button-edit {
+    margin-top: 40px;
+}
+
+.form-check-input {
+    width: 1.5em;
+    height: 1.5em;
+    padding: unset;
+}

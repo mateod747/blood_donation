@@ -55,7 +55,8 @@ class AdminPage extends Component {
             personnelGuid: "",
 
             //  For blood transaction editing
-            editTransactionCheck: false,
+            editTransactionRadioAdd: true,
+            editTransactionRadioEdit: false,
             editDay: 0,
             editMonth: 0,
             editYear: 0
@@ -585,8 +586,42 @@ class AdminPage extends Component {
                         defaultActiveKey="don"
                     >
                         <Tab eventKey="don" title="Donacije" className="tab-css">
-                            <Form noValidate validated={this.state.validatedCard2} className="form-css" onSubmit={this.handleSubmit} >
+                            <Form noValidate validated={this.state.validatedCard2} className="form-css" onSubmit={this.handleSubmit}>
                                 <div className="form-column">
+                                    <Form.Group className="check-input" controlId="formBasicCheckbox">
+                                        <Form.Check
+                                            isValid
+                                            type="radio"
+                                            label="Dodaj "
+                                            onClick={(event) => {
+                                                if (event.target.checked) {
+                                                    this.setState({
+                                                        editTransactionRadioAdd: true,
+                                                        editTransactionRadioEdit: false
+                                                    })
+                                                }
+                                            }}
+                                            checked={this.state.editTransactionRadioAdd}
+                                            variant="success" />
+                                    </Form.Group>
+                                    <Form.Group className="check-input" controlId="formBasicCheckbox">
+                                        <Form.Check
+                                            isValid
+                                            type="radio"
+                                            label="Uredi "
+                                            onClick={(event) => {
+                                                if (event.target.checked) {
+                                                    this.setState({
+                                                        editTransactionRadioAdd: false,
+                                                        editTransactionRadioEdit: true
+                                                    })
+                                                }
+                                            }
+                                            }
+                                            checked={this.state.editTransactionRadioEdit} />
+                                    </Form.Group>
+                                </div>
+                                <div className="form-column" hidden={this.state.editTransactionRadioEdit}>
                                     <Form.Group className="input-css" controlId="validationCustom088">
                                         <Form.Label>Medicinsko osoblje</Form.Label>
                                         <Form.Control
@@ -596,23 +631,21 @@ class AdminPage extends Component {
                                             onChange={(event) => this.setState({
                                                 personnelGuid: event.target.value
                                             })}
-                                            disabled={!this.state.editTransactionCheck}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
                                 </div>
-                                <div className="form-colum">
+                                <div className="form-colum" hidden={this.state.editTransactionRadioAdd === true && this.state.editTransactionRadioEdit === true}>
                                     <Form.Group className="input-css">
                                         <InputGroup className="username-drop">
                                             <FormControl
                                                 type="text"
-                                                placeholder="DonorId"
+                                                placeholder="Korisničko ime"
                                                 onChange={(event) => this.setState({
                                                     usernameTransaction: event.target.value
                                                 })}
-                                                disabled={!this.state.editTransactionCheck}
                                             />
-                                            <Button disabled={!this.state.editTransactionCheck} variant="outline-secondary" onClick={() => this.doesDonorExist()} id="button-addon2">
+                                            <Button variant="outline-secondary" onClick={() => this.doesDonorExist()} id="button-addon2">
                                                 {'->'}
                                             </Button>
                                         </InputGroup>
@@ -625,7 +658,7 @@ class AdminPage extends Component {
                                             <Alert.Heading>Točni podaci</Alert.Heading>
                                         </Alert> : null}
                                 </div>
-                                <div className="form-colum">
+                                <div className="form-column" hidden={this.state.editTransactionRadioAdd}>
                                     <Form.Group className="input-css" controlId="validationCustom0111">
                                         <Form.Label>Dan</Form.Label>
                                         <Form.Control
@@ -635,7 +668,6 @@ class AdminPage extends Component {
                                             onChange={(event) => this.setState({
                                                 editDay: Number(event.target.value)
                                             })}
-                                            disabled={!this.state.editTransactionCheck}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
@@ -648,7 +680,6 @@ class AdminPage extends Component {
                                             onChange={(event) => this.setState({
                                                 editMonth: Number(event.target.value)
                                             })}
-                                            disabled={!this.state.editTransactionCheck}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
@@ -661,18 +692,10 @@ class AdminPage extends Component {
                                             onChange={(event) => this.setState({
                                                 editYear: Number(event.target.value)
                                             })}
-                                            disabled={!this.state.editTransactionCheck}
                                         />
                                         <Form.Control.Feedback>U redu</Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group className="input-css" controlId="formBasicCheckbox">
-                                        <Form.Check
-                                            type="checkbox"
-                                            label="Uredi?"
-                                            onChange={(event) => this.setState({
-                                                editTransactionCheck: event.target.checked
-                                            })} />
-                                    </Form.Group>
+                                    <Button variant="dark" onClick="" className="button-edit">Pretraži</Button>
                                 </div>
                             </Form>
                         </Tab>
