@@ -17,9 +17,9 @@ namespace bloodDonation.Factory
             _bloodDonationDAL = bloodDonationDAL;
         }
 
-        public async Task<BloodDonationModel> GetBloodDonation(Guid id)
+        public async Task<BloodDonationModel> GetBloodDonationByDateIn(int year, int month, int day, Guid donorId)
         {
-            return await _bloodDonationDAL.GetBloodDonation(1, 1, 1);
+            return await _bloodDonationDAL.GetBloodDonation(year, month, day, donorId);
         }
 
         public async Task<bool> PostBloodDonation(BloodDonationModel model)

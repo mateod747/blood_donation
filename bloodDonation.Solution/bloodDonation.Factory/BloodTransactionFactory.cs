@@ -77,7 +77,7 @@ namespace bloodDonation.Factory
                 return (Guid.Empty, bloodTransaction);
             }
 
-            var result = await _bloodDonationDAL.GetBloodDonation(year, month, day);
+            var result = await _bloodDonationDAL.GetBloodDonation(year, month, day, donorId);
 
             if (result.BloodID == null || result.BloodID == Guid.Empty)
             {

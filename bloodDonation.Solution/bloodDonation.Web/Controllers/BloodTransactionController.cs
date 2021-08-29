@@ -26,7 +26,7 @@ namespace bloodDonation.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostBloodTransaction(string username, [FromBody] BloodTransactionModelDto bloodTransactionModelDto, [FromHeader] string token)
+        public async Task<IActionResult> PostBloodTransaction([FromBody] BloodTransactionModelDto bloodTransactionModelDto, [FromHeader] string token)
         {
             var bloodDonation = new BloodDonationModel()
             {
@@ -61,7 +61,7 @@ namespace bloodDonation.Web.Controllers
             {
                 if (claim.Equals("Admin"))
                 {
-                    var donor = await _donorFactory.GetDonorByUsername(username);
+                    var donor = await _donorFactory.GetDonorByUsername(bloodTransactionModelDto.Username);
 
                     if (donor == null || donor.DonorID == Guid.Empty) return Ok(false);
 
@@ -89,6 +89,99 @@ namespace bloodDonation.Web.Controllers
             return Ok(true);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> EditBloodTransaction([FromBody] BloodTransactionModelDto bloodTransactionModelDto, [FromHeader] string token)
+        {
+            var bloodTransaction = new BloodTransactionModel()
+            {
+                TransactID = bloodTransactionModelDto.TransactId,
+                RecipientID = bloodTransactionModelDto.RecipientId,
+                Notes = bloodTransactionModelDto.Notes
+            };
+
+            var validationResult = JWTAuth.ValidateCurrentToken(token);
+
+            var claim = String.Empty;
+
+            if (!validationResult) return Ok(false);
+
+            claim = JWTAuth.GetClaim(token, "UserRole");
+
+            try
+            {
+                if (claim.Equals("Admin"))
+                {                    
+                    var result = await _bloodTransactionFactory.EditBloodTransaction(bloodTransaction);
+
+                    if (result == false) return Ok(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(true);
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> GetBloodTransaction(int day, int month, int year, [FromBody] BloodTransactionModelDto bloodTransactionModelDto, [FromHeader] string token)
+        {
+            var validationResult = JWTAuth.ValidateCurrentToken(token);
+
+            var claim = String.Empty;
+
+            if (!validationResult) return Ok(false);
+
+            claim = JWTAuth.GetClaim(token, "UserRole");
+
+            var transaction = new BloodTransactionModel()
+            {
+                TransactID = Guid.Empty,
+            };
+
+            try
+            {
+                if (claim.Equals("Admin"))
+                {
+                    var donor = await _donorFactory.GetDonorByUsername(bloodTransactionModelDto.Username);
+
+                    if(donor == null || donor.DonorID == Guid.Empty)
+                    {
+                        return Ok(transaction);
+                    }
+
+                    var bloodDonation = await _bloodDonationFactory.GetBloodDonationByDateIn(
+                                                year,
+                                                month,
+                                                day,
+                                                donor.DonorID);
+
+                    if (bloodDonation == null || bloodDonation.BloodID == Guid.Empty)
+                    {
+                        return Ok(transaction);
+                    }
+
+                    var result = await _bloodTransactionFactory.GetBloodTransaction(bloodDonation.BloodID);
+
+                    if (result == null || result.TransactID == Guid.Empty)
+                    {
+                        return Ok(transaction);
+                    }
+
+                    transaction.TransactID = result.TransactID;
+                    transaction.Notes = result.Notes;
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(transaction);
+        }
+
         #region Classes 
 
         public class TransactionDataDto
@@ -101,11 +194,15 @@ namespace bloodDonation.Web.Controllers
 
         public class BloodTransactionModelDto
         {
+            public string Username { get; set; }
             public Guid DonorId { get; set; }
             public Guid TransactId { get; set; }
             public Guid BloodId { get; set; }
             public Guid RecipientId { get; set; }
             public Guid EmpId { get; set; }
+            public int DateInYear { get; set; }
+            public int DateInMonth { get; set; }
+            public int DateInDay { get; set; }
             public int DateOutYear { get; set; }
             public int DateOutMonth { get; set; }
             public int DateOutDay { get; set; }
@@ -115,6 +212,8 @@ namespace bloodDonation.Web.Controllers
             public string Notes { get; set; }
             public bool Success { get; set; }
         }
+
+
 
         #endregion
     }

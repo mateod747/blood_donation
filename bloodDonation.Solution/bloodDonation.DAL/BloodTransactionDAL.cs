@@ -88,15 +88,9 @@ namespace bloodDonation.DAL
             var success = false;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = @"Update BloodTransaction set empID = @empID, 
-                                                        quantity = @quantity,  
-                                                        dateOut = @dateOut,
+                string queryString = @"Update BloodTransaction set  
                                                         recipientID = @recipientID,
-                                                        bloodID = @bloodID,
-                                                        hemoglobin = @hemoglobin,
-                                                        bloodPressure = @bloodPressure,
                                                         notes = @notes,
-                                                        success = @success,
                                                         where transactID = @id;";
 
                 SqlCommand command = new SqlCommand(queryString, connection);

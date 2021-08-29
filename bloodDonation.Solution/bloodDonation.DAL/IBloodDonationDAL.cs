@@ -9,7 +9,7 @@ namespace bloodDonation.DAL
 {
     public interface IBloodDonationDAL
     {
-        Task<BloodDonationModel> GetBloodDonation(int year, int month, int day);
+        Task<BloodDonationModel> GetBloodDonation(int year, int month, int day, Guid donorId);
         Task<List<BloodDonationModel>> GetBloodDonationsAsync(Guid id);
         Task<bool> PostBloodDonation(BloodDonationModel model);
         Task<bool> EditBloodDonation(BloodDonationModel model);
