@@ -91,19 +91,14 @@ namespace bloodDonation.DAL
                 string queryString = @"Update BloodTransaction set  
                                                         recipientID = @recipientID,
                                                         notes = @notes,
+                                                        dateOut = @dateOut
                                                         where transactID = @id;";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@empID", model.EmpID);
-                command.Parameters.AddWithValue("@quantity", model.Quantity);
                 command.Parameters.AddWithValue("@dateOut", model.DateOut);
                 command.Parameters.AddWithValue("@recipientID", model.RecipientID);
-                command.Parameters.AddWithValue("@bloodID", model.BloodID);
                 command.Parameters.AddWithValue("@id", model.TransactID);
-                command.Parameters.AddWithValue("@hemoglobin", model.Hemoglobin);
-                command.Parameters.AddWithValue("@bloodPressure", model.BloodPressure);
                 command.Parameters.AddWithValue("@notes", model.Notes);
-                command.Parameters.AddWithValue("@success", model.Success);
 
                 connection.Open();
 

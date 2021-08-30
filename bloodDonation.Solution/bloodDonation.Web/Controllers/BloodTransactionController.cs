@@ -96,7 +96,8 @@ namespace bloodDonation.Web.Controllers
             {
                 TransactID = bloodTransactionModelDto.TransactId,
                 RecipientID = bloodTransactionModelDto.RecipientId,
-                Notes = bloodTransactionModelDto.Notes
+                Notes = bloodTransactionModelDto.Notes,
+                DateOut = new DateTime(bloodTransactionModelDto.DateOutYear, bloodTransactionModelDto.DateOutMonth, bloodTransactionModelDto.DateOutDay)
             };
 
             var validationResult = JWTAuth.ValidateCurrentToken(token);

@@ -77,6 +77,9 @@ class AdminPage extends Component {
             transEditDateOutMonth: 0,
             transEditDateOutDay: 0,
             transEditNotes: "",
+
+            transactionGetError: false,
+            showStatusGetTransaction: false
         };
     }
 
@@ -263,18 +266,28 @@ class AdminPage extends Component {
         await fetch(`https://localhost:44336/api/bloodtransaction/GetBloodTransaction?day=${this.state.transEditDateInDay}&month=${this.state.transEditDateInMonth}&year=${this.state.transEditDateInYear}`, requestOptions)
             .then(async res => await res.json())
             .then(json => {
-                this.setState({
-                    transEditTransactId: json.transactID,
-                    transEditNotes: json.notes,
-                    showStatusAddTransaction: true,
-                    transactionAddError: false,
-                });
+                if (json.transactID === '00000000-0000-0000-0000-000000000000') {
+                    this.setState({
+                        showStatusGetTransaction: true,
+                        transactionGetError: true,
+                        transEditTransactId: "",
+                        transEditNotes: ""
+                    });
+                }
+                else {
+                    this.setState({
+                        transEditTransactId: json.transactID,
+                        transEditNotes: json.notes,
+                        showStatusGetTransaction: true,
+                        transactionGetError: false,
+                    });
+                }
             })
             .catch((message) => {
                 this.setState({
-                    showStatusAddTransaction: true,
-                    transactionAddError: true,
-                })
+                    showStatusGetTransaction: true,
+                    transactionGetError: true,
+                });
             });
     }
 
@@ -320,6 +333,9 @@ class AdminPage extends Component {
             TransactID: this.state.transEditTransactId,
             RecipientID: this.state.transEditRecipient,
             Notes: this.state.transEditNotes,
+            DateOutYear: this.state.transEditDateOutYear,
+            DateOutMonth: this.state.transEditDateOutMonth,
+            DateOutDay: this.state.transEditDateOutDay
         };
 
         const requestOptions = {
@@ -336,14 +352,14 @@ class AdminPage extends Component {
             .then(async res => await res.json())
             .then(json => {
                 this.setState({
-                    showStatusAddTransaction: true,
-                    transactionAddError: false,
+                    showStatusEditTransaction: true,
+                    transactionEditError: false,
                 });
             })
             .catch((message) => {
                 this.setState({
-                    showStatusAddTransaction: true,
-                    transactionAddError: true,
+                    showStatusEditTransaction: true,
+                    transactionEditError: true,
                 })
             });
     }
@@ -882,6 +898,16 @@ class AdminPage extends Component {
                                     <Button variant="dark" onClick={() => this.GetBloodTransaction()} className="button-edit">Pretraži</Button>
                                 </div>
                                 <div className="form-column" hidden={this.state.editTransactionRadioAdd}>
+                                    {this.state.showStatusGetTransaction ? this.state.transactionGetError === true ?
+                                        <Alert variant="danger" onClose={() => this.setState({ showStatusGetTransaction: false })} dismissible>
+                                            <Alert.Heading>Pogrješka!</Alert.Heading>
+                                        </Alert> :
+                                        <Alert variant="success" onClose={() => this.setState({ showStatusGetTransaction: false })} dismissible>
+                                            <Alert.Heading>Uspjeh!</Alert.Heading>
+                                        </Alert> : null
+                                    }
+                                </div>
+                                <div className="form-column" hidden={this.state.editTransactionRadioAdd}>
                                     <Form.Group className="input-css" controlId="validationCustom01111">
                                         <Form.Label>Primalac</Form.Label>
                                         <Form.Control
@@ -952,6 +978,9 @@ class AdminPage extends Component {
                                     </Form.Group>
                                 </div>
                                 <div className="form-column" hidden={this.state.editTransactionRadioAdd}>
+                                    <Button variant="dark" onClick={() => this.EditBloodTransaction()}>Uredi</Button>
+                                </div>
+                                <div className="form-column" hidden={this.state.editTransactionRadioAdd}>
                                     {this.state.showStatusEditTransaction ? this.state.transactionEditError === true ?
                                         <Alert variant="danger" onClose={() => this.setState({ showStatusEditTransaction: false })} dismissible>
                                             <Alert.Heading>Pogrješka!</Alert.Heading>
@@ -960,7 +989,6 @@ class AdminPage extends Component {
                                             <Alert.Heading>Uspjeh!</Alert.Heading>
                                         </Alert> : null
                                     }
-                                    <Button variant="dark" onClick={() => this.EditBloodTransaction()}>Uredi</Button>
                                 </div>
                             </Form>
                         </Tab>
